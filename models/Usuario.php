@@ -124,10 +124,12 @@ class Usuario extends ActiveRecord{
         
         if(!$resultado){
             self::$alertas['error'][] = "Password incorrecto";
+            return false;
         }
 
         if(!$this->confirmado){
             self::$alertas['error'][] = "Aún no has confirmado tu cuenta, revisa tu email";
+            return false;
         }
 
         else {
