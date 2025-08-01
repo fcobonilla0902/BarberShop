@@ -1,0 +1,25 @@
+@use 'base/mixins' as m;
+
+.app-citas{
+    @include m.tablet{
+        overflow-y:hidden;
+
+    }
+}
+.seccion{
+    padding: 5rem 3rem;
+    display: none;
+
+    .text-center{
+        text-align: center;
+    }
+
+}
+
+.mostrar{
+    display: block;
+}
+
+.ocultar{
+    display: none;
+}
