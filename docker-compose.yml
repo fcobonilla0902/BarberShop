@@ -1,0 +1,50 @@
+services:
+  app:
+    build: .
+    container_name: barbershop_app
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/var/www/html
+      - /var/www/html/vendor
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+    container_name: barbershop_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: appsalon_mvc
+      MYSQL_USER: appsalon
+      MYSQL_PASSWORD: appsalon123
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./database.sql:/docker-entrypoint-initdb.d/database.sql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: barbershop_phpmyadmin
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+    depends_on:
+      - db
+
+  assets:
+    image: node:20
+    container_name: barbershop_assets
+    working_dir: /var/www/html
+    volumes:
+      - .:/var/www/html
+      - /var/www/html/node_modules
+    command: sh -c "npm install && npm run gulp"
+
+volumes:
+  db_data:

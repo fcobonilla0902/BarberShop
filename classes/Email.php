@@ -17,16 +17,17 @@ class Email{
     }
 
     public function enviarConfirmacion(){
-        // Crear el objeto de email
-        $mail = new PHPMailer();
+        $mail = new PHPMailer(true);
         $mail->isSMTP();
         $mail->Host = $_ENV['EMAIL_HOST'];
         $mail->SMTPAuth = true;
         $mail->Port = $_ENV['EMAIL_PORT'];
         $mail->Username = $_ENV['EMAIL_USER'];
         $mail->Password = $_ENV['EMAIL_PASS'];
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
 
-        $mail->setFrom('cuentas@appsalon.com'); // quien lo envia
+        $mail->setFrom($_ENV['EMAIL_FROM'], $_ENV['EMAIL_FROM_NAME'] ?? 'BarberShop');
+
         $mail->addAddress($this->email, $this->nombre); // destinatario
         $mail->Subject = 'Confirma tu cuenta';
 
@@ -49,15 +50,16 @@ class Email{
 
     public function enviarInstrucciones(){
         // Crear el objeto de email
-        $mail = new PHPMailer();
+        $mail = new PHPMailer(true);
         $mail->isSMTP();
         $mail->Host = $_ENV['EMAIL_HOST'];
         $mail->SMTPAuth = true;
         $mail->Port = $_ENV['EMAIL_PORT'];
         $mail->Username = $_ENV['EMAIL_USER'];
         $mail->Password = $_ENV['EMAIL_PASS'];
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
 
-        $mail->setFrom('cuentas@appsalon.com'); // quien lo envia
+        $mail->setFrom($_ENV['EMAIL_FROM'], $_ENV['EMAIL_FROM_NAME'] ?? 'BarberShop');
         $mail->addAddress($this->email, $this->nombre); // destinatario
         $mail->Subject = 'Reestablece tu Password';
 
