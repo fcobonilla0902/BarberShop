@@ -1,0 +1,104 @@
+@use 'base/mixins' as m;
+
+.dashboard-page {
+    display: grid;
+    gap: 2rem;
+}
+
+.dashboard-heading {
+    margin-bottom: 0;
+}
+
+.dashboard-kpis {
+    margin-bottom: 0;
+}
+
+.kpi-card--money strong {
+    color: #087d59;
+}
+
+.dashboard-secondary-kpi {
+    display: grid;
+    gap: 1.2rem;
+
+    @include m.tablet {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    article {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1.2rem;
+        padding: 1.4rem 1.8rem;
+        border-radius: 1.6rem;
+        background: #08110f;
+        color: white;
+        box-shadow: 0 1rem 2.4rem rgba(8, 17, 15, .12);
+
+        span {
+            color: #98a8a1;
+            font-weight: 700;
+        }
+
+        strong {
+            color: white;
+            font-size: 1.8rem;
+        }
+    }
+}
+
+.dashboard-grid {
+    margin-top: 0;
+
+    @include m.desktop {
+        grid-template-columns: minmax(0, 1.55fr) minmax(34rem, .8fr);
+    }
+}
+
+.dashboard-grid--bottom {
+    @include m.desktop {
+        grid-template-columns: minmax(0, 1.2fr) minmax(34rem, .8fr);
+    }
+}
+
+.dashboard-stock-card {
+    align-items: flex-start;
+
+    strong {
+        font-size: 1.5rem;
+    }
+
+    span {
+        line-height: 1.35;
+    }
+}
+
+.stock-pill--danger {
+    background: rgba(220,53,69,.13);
+    color: #c9243b !important;
+}
+
+.stock-pill--warning {
+    background: rgba(245,158,11,.14);
+    color: #9a5e00 !important;
+}
+
+.status-badge--info {
+    background: rgba(18,136,255,.14);
+    color: #0b6fd3;
+}
+
+.status-badge--danger {
+    background: rgba(220,53,69,.16);
+    color: #c9243b;
+}
+
+.table-modern small {
+    color: #66766f;
+    font-size: 1.2rem;
+}
+
+.table-modern strong {
+    color: #15201c;
+}
