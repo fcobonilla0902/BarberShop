@@ -1,0 +1,144 @@
+@use 'base/mixins' as m;
+
+/* ==========================================================
+   AJUSTES ISSUE 3.1
+   - Baja tamaño/peso de tipografías
+   - Arregla navegación del cliente
+   - Da más espacio a la zona derecha de citas
+   ========================================================== */
+
+/* Baja el bold general sin perder el estilo del diseño */
+.auth-header h1,
+.client-heading h1,
+.section-heading h2,
+.page-heading h1,
+.public-hero__content h2,
+.kpi-card strong,
+.service-card-admin h3,
+.listado-servicios--cards .servicio h3 {
+    font-weight: 800;
+}
+
+/* Hero del lado izquierdo: antes se veía demasiado pesado */
+.public-hero__content h2 {
+    font-size: clamp(3.2rem, 4.2vw, 5.4rem);
+    line-height: 1.04;
+}
+
+/* Títulos cliente: menos gigantes */
+.client-heading h1,
+.auth-header h1 {
+    font-size: clamp(3rem, 3.4vw, 4.4rem);
+}
+
+/* Títulos internos */
+.section-heading h2 {
+    font-size: clamp(2.4rem, 2.6vw, 3.2rem);
+}
+
+/* Admin: baja tamaño general */
+.page-heading h1 {
+    font-size: clamp(3rem, 3.3vw, 4rem);
+}
+
+.admin-topbar h2 {
+    font-size: 2.1rem;
+}
+
+.admin-nav__link {
+    font-size: 1.35rem;
+}
+
+.kpi-card strong {
+    font-size: 2.8rem;
+}
+
+.data-card__header h2 {
+    font-size: 2.1rem;
+}
+
+/* Servicios cliente: cards menos exageradas */
+.listado-servicios--cards .servicio {
+    padding: 1.6rem;
+}
+
+.listado-servicios--cards .servicio h3 {
+    font-size: 1.8rem;
+    line-height: 1.12;
+}
+
+.listado-servicios--cards .servicio .precio-servicio {
+    font-size: 2rem;
+    line-height: 1.12;
+}
+
+/* El problema de navegación del cliente venía de que el contenido alto se centraba verticalmente */
+.public-content:has(.client-page) {
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding-top: 2.4rem;
+    padding-bottom: 2.4rem;
+}
+
+/* En cita, damos más espacio a la parte derecha y menos al hero */
+.public-shell:has(.client-page) {
+    @include m.desktop {
+        grid-template-columns: minmax(32rem, 38%) minmax(0, 62%);
+    }
+}
+
+/* La card de cita necesita más ancho que login/registro */
+.public-card:has(.client-page) {
+    width: min(100%, 108rem);
+}
+
+/* Si no cabe todo, que el navegador permita ver el inicio de la cita */
+.client-page {
+    padding-top: 0;
+}
+
+/* El aside de resumen en cita no debe aplastar los servicios */
+.appointment-layout {
+    @include m.desktop {
+        grid-template-columns: minmax(0, 1fr) 28rem;
+    }
+}
+
+/* En pantallas medianas, mejor que el resumen baje abajo a que todo se comprima */
+@media (max-width: 1350px) {
+    .appointment-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .appointment-summary {
+        position: static;
+    }
+}
+
+/* Botones tabs un poco menos altos */
+.tabs-modern button {
+    min-height: 4.2rem;
+    font-size: 1.35rem;
+}
+
+/* Sidebar admin más compacto */
+.admin-sidebar {
+    @include m.desktop {
+        width: 26rem;
+    }
+}
+
+.admin-shell {
+    @include m.desktop {
+        grid-template-columns: 26rem minmax(0, 1fr);
+    }
+}
+
+/* Tablas y textos admin más balanceados */
+.table-modern {
+    font-size: 1.3rem;
+}
+
+.status-badge {
+    font-size: 1.1rem;
+}

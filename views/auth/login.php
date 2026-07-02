@@ -1,28 +1,31 @@
-<h1 class="nombre-pagina">Login</h1>
-<p class="descripcion-pagina">Inicia sesión con tus datos</p>
+<div class="auth-header">
+    <span class="screen-tag">Acceso</span>
+    <h1>Login</h1>
+    <p>Inicia sesión con tus datos para continuar.</p>
+</div>
 
 <?php include_once __DIR__ . "/../templates/alertas.php"; ?>
 
-<form action="/" method="POST" class="formulario">
-    <div class="campo">
+<form action="/" method="POST" class="formulario auth-form">
+    <div class="campo campo--stack">
         <label for="email">Correo electrónico</label>
         <input type="email" id="email" name="email" placeholder="correo@ejemplo.com">
     </div>
 
-    <div class="campo">
+    <div class="campo campo--stack">
         <label for="password">Contraseña</label>
         <input type="password" id="password" name="password" placeholder="Tu contraseña">
     </div>
 
-    <input type="submit" class="boton" value="Iniciar Sesión">
+    <input type="submit" class="btn btn--primary btn--full" value="Iniciar Sesión">
 
-    <div class="acciones">
-        <button class="boton" type="submit" name="demo" value="cliente">Demo Cliente</button>
-        <button class="boton" type="submit" name="demo" value="admin">Demo Admin</button>
+    <div class="demo-actions">
+        <button class="btn btn--soft" type="submit" name="demo" value="cliente">Demo Cliente</button>
+        <button class="btn btn--soft" type="submit" name="demo" value="admin">Demo Admin</button>
     </div>
 </form>
 
-<div class="acciones">
+<div class="auth-links">
     <a href="/crear-cuenta">Crear una cuenta</a>
     <a href="/olvide">¿Olvidaste tu password?</a>
 </div>

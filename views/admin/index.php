@@ -1,67 +1,119 @@
-<h1 class="nombre-pagina">Dashboard</h1>
-<p class="descripcion-pagina">Resumen de actividad del día</p>
-
 <?php include_once __DIR__ . '/../templates/barra.php'; ?>
 
-<div class="busqueda">
-    <form class="formulario" method="GET" action="/admin">
-        <div class="campo">
-            <label for="fecha">Fecha</label>
-            <input type="date" id="fecha" name="fecha" value="<?php echo s($fecha); ?>">
+<section class="admin-page">
+    <div class="page-heading">
+        <div>
+            <span class="screen-tag">Panel general</span>
+            <h1>Dashboard</h1>
+            <p>Resumen de citas, ventas, clientes e inventario.</p>
         </div>
 
-        <input type="submit" class="boton" value="Filtrar">
-    </form>
-</div>
+        <form method="GET" action="/admin" class="date-filter">
+            <label for="fecha">Fecha</label>
+            <input type="date" id="fecha" name="fecha" value="<?php echo s($fecha); ?>">
+            <button type="submit" class="btn btn--primary">Filtrar</button>
+        </form>
+    </div>
 
-<div class="servicios">
-    <li>
-        <p>Citas de hoy: <span><?php echo (int)$metricas['citas_hoy']; ?></span></p>
-    </li>
-    <li>
-        <p>Ventas del día: <span>$<?php echo number_format($metricas['ventas_dia'], 2); ?> MXN</span></p>
-    </li>
-    <li>
-        <p>Productos bajo stock: <span><?php echo (int)$metricas['productos_bajo_stock']; ?></span></p>
-    </li>
-    <li>
-        <p>Clientes registrados: <span><?php echo (int)$metricas['clientes_registrados']; ?></span></p>
-    </li>
-</div>
+    <div class="kpi-grid">
+        <article class="kpi-card">
+            <span>Citas de hoy</span>
+            <strong><?php echo (int)$metricas['citas_hoy']; ?></strong>
+            <small>Agenda del día seleccionado</small>
+        </article>
 
-<h2>Próximas citas</h2>
+        <article class="kpi-card">
+            <span>Ventas del día</span>
+            <strong>$<?php echo number_format($metricas['ventas_dia'], 2); ?></strong>
+            <small>MXN con IVA incluido</small>
+        </article>
 
-<ul class="citas">
-    <?php if(empty($proximasCitas)) { ?>
-        <li>
-            <p>No hay citas para esta fecha</p>
-        </li>
-    <?php } ?>
+        <article class="kpi-card">
+            <span>Bajo stock</span>
+            <strong><?php echo (int)$metricas['productos_bajo_stock']; ?></strong>
+            <small>Productos por revisar</small>
+        </article>
 
-    <?php foreach($proximasCitas as $cita) { ?>
-        <li>
-            <p>Hora: <span><?php echo s(substr($cita['hora_inicio'], 0, 5)); ?></span></p>
-            <p>Cliente: <span><?php echo s($cita['cliente']); ?></span></p>
-            <p>Servicios: <span><?php echo s($cita['servicios']); ?></span></p>
-            <p>Estado: <span><?php echo s($cita['estado']); ?></span></p>
-        </li>
-    <?php } ?>
-</ul>
+        <article class="kpi-card">
+            <span>Clientes</span>
+            <strong><?php echo (int)$metricas['clientes_registrados']; ?></strong>
+            <small>Registrados en sistema</small>
+        </article>
+    </div>
 
-<h2>Productos con bajo stock</h2>
+    <div class="panel-grid">
+        <section class="data-card">
+            <div class="data-card__header">
+                <div>
+                    <h2>Próximas citas</h2>
+                    <p>Citas programadas para la fecha seleccionada.</p>
+                </div>
+                <span class="status-badge">Agenda</span>
+            </div>
 
-<ul class="citas">
-    <?php if(empty($productosBajoStock)) { ?>
-        <li>
-            <p>No hay productos bajo stock</p>
-        </li>
-    <?php } ?>
+            <div class="table-wrap">
+                <table class="table-modern">
+                    <thead>
+                        <tr>
+                            <th>Hora</th>
+                            <th>Cliente</th>
+                            <th>Servicios</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php if(empty($proximasCitas)) { ?>
+                            <tr>
+                                <td colspan="4">No hay citas para esta fecha.</td>
+                            </tr>
+                        <?php } ?>
 
-    <?php foreach($productosBajoStock as $producto) { ?>
-        <li>
-            <p>Producto: <span><?php echo s($producto['nombre']); ?></span></p>
-            <p>Stock actual: <span><?php echo (int)$producto['stock_total']; ?></span></p>
-            <p>Stock mínimo: <span><?php echo (int)$producto['stock_minimo']; ?></span></p>
-        </li>
-    <?php } ?>
-</ul>
+                        <?php foreach($proximasCitas as $cita) { ?>
+                            <tr>
+                                <td><?php echo s(substr($cita['hora_inicio'], 0, 5)); ?></td>
+                                <td><?php echo s($cita['cliente']); ?></td>
+                                <td><?php echo s($cita['servicios']); ?></td>
+                                <td>
+                                    <span class="status-badge status-badge--success">
+                                        <?php echo s($cita['estado']); ?>
+                                    </span>
+                                </td>
+                            </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="data-card">
+            <div class="data-card__header">
+                <div>
+                    <h2>Inventario bajo</h2>
+                    <p>Productos que llegaron o bajaron del stock mínimo.</p>
+                </div>
+                <span class="status-badge status-badge--warning">Stock</span>
+            </div>
+
+            <div class="inventory-list">
+                <?php if(empty($productosBajoStock)) { ?>
+                    <div class="empty-state">
+                        No hay productos bajo stock.
+                    </div>
+                <?php } ?>
+
+                <?php foreach($productosBajoStock as $producto) { ?>
+                    <article class="stock-card">
+                        <div>
+                            <strong><?php echo s($producto['nombre']); ?></strong>
+                            <span>Stock mínimo: <?php echo (int)$producto['stock_minimo']; ?></span>
+                        </div>
+
+                        <span class="stock-pill">
+                            <?php echo (int)$producto['stock_total']; ?> disp.
+                        </span>
+                    </article>
+                <?php } ?>
+            </div>
+        </section>
+    </div>
+</section>
