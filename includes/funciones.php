@@ -7,29 +7,24 @@ function debuguear($variable) : string {
     exit;
 }
 
-// Escapa / Sanitizar el HTML
 function s($html) : string {
-    $s = htmlspecialchars($html);
-    return $s;
+    return htmlspecialchars($html ?? '', ENT_QUOTES, 'UTF-8');
 }
 
-function esUltimo(string $actual, string $proximo){
-    if($actual !== $proximo){
-        return true;
-    }
-    return false;
+function esUltimo(string $actual, string $proximo) {
+    return $actual !== $proximo;
 }
 
-// Funcion que revisa que el usuario este autenticado
-function isAuth(){
-    if(!isset($_SESSION['login'])){
+function isAuth() {
+    if(!isset($_SESSION['login']) || $_SESSION['login'] !== true) {
         header('Location: /');
+        exit;
     }
 }
 
-
-function isAdmin(){
-    if(!isset($_SESSION['admin'])){
+function isAdmin() {
+    if(!isset($_SESSION['admin']) || $_SESSION['admin'] !== true) {
         header('Location: /');
+        exit;
     }
 }

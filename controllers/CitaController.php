@@ -1,19 +1,21 @@
 <?php
 
 namespace Controllers;
+
 use MVC\Router;
 
-class CitaController{
-    public static function index(Router $router){
-        if (!$_SESSION['nombre']) {
-            session_start();
+class CitaController {
+    public static function index(Router $router) {
+        isAuth();
+
+        if(($_SESSION['tipo_usuario'] ?? '') !== 'cliente') {
+            header('Location: /admin');
+            exit;
         }
 
-        isAuth();
-    
         $router->render('cita/index', [
-            'nombre' => $_SESSION['nombre'],
-            'id' => $_SESSION['id']
+            'nombre' => $_SESSION['nombre'] ?? '',
+            'id' => $_SESSION['cliente_id'] ?? $_SESSION['id'] ?? ''
         ]);
     }
 }

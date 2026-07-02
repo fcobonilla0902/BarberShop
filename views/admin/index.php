@@ -1,71 +1,67 @@
-<h1 class="nombre-pagina">Panel de Administración</h1>
+<h1 class="nombre-pagina">Dashboard</h1>
+<p class="descripcion-pagina">Resumen de actividad del día</p>
 
-<?php
-    include_once __DIR__ . '/../templates/barra.php';
-?>
-
-<h2>Buscar Citas</h2>
+<?php include_once __DIR__ . '/../templates/barra.php'; ?>
 
 <div class="busqueda">
-    <form class="formulario">
-
+    <form class="formulario" method="GET" action="/admin">
         <div class="campo">
             <label for="fecha">Fecha</label>
-            <input type="date" id="fecha" name="fecha" value="<?php echo $fecha; ?>">
+            <input type="date" id="fecha" name="fecha" value="<?php echo s($fecha); ?>">
         </div>
 
+        <input type="submit" class="boton" value="Filtrar">
     </form>
 </div>
 
-<?php
-    if(count($citas) === 0){
-        echo "<h2>No hay citas en esta fecha</h2>";
-    }
-?>
-
-<div id="citas-admin">
-
-    <ul class="citas">
-        <?php
-            $idCita = 0;
-            foreach($citas as $key => $cita){
-                if($idCita !== $cita->id){
-                    $total = 0;
-        ?>
-        <li>
-                <p>ID: <span><?php echo $cita->id; ?></span></p>
-                <p>Hora: <span><?php echo $cita->hora; ?></span></p>
-                <p>Cliente: <span><?php echo $cita->cliente; ?></span></p>
-                <p>Email: <span><?php echo $cita->email; ?></span></p>
-                <p>Teléfono: <span><?php echo $cita->telefono; ?></span></p>
-
-                <h3>Servicios</h3>
-        <?php 
-            $idCita = $cita->id;
-        } // fin de if 
-            $total += $cita->precio;
-        ?>
-                <p class="servicio"><?php echo $cita->servicio . " " . $cita->precio; ?></p>     
-
-        <?php 
-            $actual = $cita->id;
-            $proximo = $citas[$key + 1]->id ?? 0;
-
-            if(esUltimo($actual, $proximo)){ ?>
-                <p class="total">Total: <span>$<?php echo $total; ?></span></p>
-
-                <form action="/api/eliminar" method="POST">
-                    <input type="hidden" name="id" value="<?php echo $cita->id; ?>">
-                    <input type="submit" class="boton-eliminar" value="Eliminar">
-                </form>
-        <?php
-            }
-        ?>
-        <?php } // fin de foreach ?>
-    </ul>
-
+<div class="servicios">
+    <li>
+        <p>Citas de hoy: <span><?php echo (int)$metricas['citas_hoy']; ?></span></p>
+    </li>
+    <li>
+        <p>Ventas del día: <span>$<?php echo number_format($metricas['ventas_dia'], 2); ?> MXN</span></p>
+    </li>
+    <li>
+        <p>Productos bajo stock: <span><?php echo (int)$metricas['productos_bajo_stock']; ?></span></p>
+    </li>
+    <li>
+        <p>Clientes registrados: <span><?php echo (int)$metricas['clientes_registrados']; ?></span></p>
+    </li>
 </div>
 
-<?php
-    $script = "<script src='build/js/buscador.js'></script>";
-?>
+<h2>Próximas citas</h2>
+
+<ul class="citas">
+    <?php if(empty($proximasCitas)) { ?>
+        <li>
+            <p>No hay citas para esta fecha</p>
+        </li>
+    <?php } ?>
+
+    <?php foreach($proximasCitas as $cita) { ?>
+        <li>
+            <p>Hora: <span><?php echo s(substr($cita['hora_inicio'], 0, 5)); ?></span></p>
+            <p>Cliente: <span><?php echo s($cita['cliente']); ?></span></p>
+            <p>Servicios: <span><?php echo s($cita['servicios']); ?></span></p>
+            <p>Estado: <span><?php echo s($cita['estado']); ?></span></p>
+        </li>
+    <?php } ?>
+</ul>
+
+<h2>Productos con bajo stock</h2>
+
+<ul class="citas">
+    <?php if(empty($productosBajoStock)) { ?>
+        <li>
+            <p>No hay productos bajo stock</p>
+        </li>
+    <?php } ?>
+
+    <?php foreach($productosBajoStock as $producto) { ?>
+        <li>
+            <p>Producto: <span><?php echo s($producto['nombre']); ?></span></p>
+            <p>Stock actual: <span><?php echo (int)$producto['stock_total']; ?></span></p>
+            <p>Stock mínimo: <span><?php echo (int)$producto['stock_minimo']; ?></span></p>
+        </li>
+    <?php } ?>
+</ul>
