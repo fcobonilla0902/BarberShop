@@ -7,6 +7,7 @@ const cita = {
     nombre: '',
     fecha: '',
     hora: '',
+    notas: '',
     servicios: []
 }
 
@@ -27,6 +28,7 @@ function iniciarApp() {
     nombreCliente();
     seleccionarFecha();
     seleccionarHora();
+    capturarNotas();
 
     mostrarResumen();
 }
@@ -104,6 +106,17 @@ function paginaSiguiente() {
 
     paginaSiguiente.addEventListener('click', function() {
         if(paso >= pasoFinal) return;
+
+        if(paso === 1 && cita.servicios.length === 0) {
+            mostrarAlerta('Selecciona al menos un servicio', 'error', '.appointment-main');
+            return;
+        }
+
+        if(paso === 2 && (!cita.fecha || !cita.hora)) {
+            mostrarAlerta('Selecciona fecha y hora', 'error', '.appointment-form');
+            return;
+        }
+
         paso++;
         botonesPaginador();
     })
@@ -173,6 +186,8 @@ function seleccionarServicio(servicio) {
         cita.servicios = [...servicios, servicio];
         divServicio.classList.add('seleccionado');
     }
+
+    actualizarMiniResumen();
 }
 
 function idCliente() {
@@ -194,10 +209,13 @@ function seleccionarFecha() {
 
         if([6, 0].includes(dia)) {
             e.target.value = '';
+            cita.fecha = '';
             mostrarAlerta('Fines de semana no permitidos', 'error', '.appointment-form');
         } else {
             cita.fecha = e.target.value;
         }
+
+        actualizarMiniResumen();
     });
 }
 
@@ -211,11 +229,59 @@ function seleccionarHora() {
 
         if(hora < 10 || hora > 18) {
             e.target.value = '';
-            mostrarAlerta('Hora no válida', 'error', '.appointment-form');
+            cita.hora = '';
+            mostrarAlerta('Hora no válida. Usa horario de 10:00 a 18:00', 'error', '.appointment-form');
         } else {
             cita.hora = e.target.value;
         }
+
+        actualizarMiniResumen();
     })
+}
+
+function capturarNotas() {
+    const inputNotas = document.querySelector('#notas');
+    if(!inputNotas) return;
+
+    inputNotas.addEventListener('input', function(e) {
+        cita.notas = e.target.value;
+    });
+}
+
+function actualizarMiniResumen() {
+    const resumen = document.querySelector('.appointment-summary');
+    if(!resumen) return;
+
+    const total = cita.servicios.reduce((acc, servicio) => acc + Number(servicio.precio || 0), 0);
+    const duracion = cita.servicios.reduce((acc, servicio) => acc + Number(servicio.duracion_minutos || 0), 0);
+
+    let resumenServicios = resumen.querySelector('.mini-selected-services');
+
+    if(!resumenServicios) {
+        resumenServicios = document.createElement('DIV');
+        resumenServicios.classList.add('mini-selected-services');
+        resumen.appendChild(resumenServicios);
+    }
+
+    if(cita.servicios.length === 0) {
+        resumenServicios.innerHTML = '';
+        return;
+    }
+
+    resumenServicios.innerHTML = `
+        <div class="summary-item">
+            <span>Servicios</span>
+            <strong>${cita.servicios.length} seleccionado(s)</strong>
+        </div>
+        <div class="summary-item">
+            <span>Duración estimada</span>
+            <strong>${duracion} min</strong>
+        </div>
+        <div class="summary-item">
+            <span>Total estimado</span>
+            <strong>$${total.toFixed(2)} MXN</strong>
+        </div>
+    `;
 }
 
 function mostrarAlerta(mensaje, tipo, elemento, desaparece = true) {
@@ -256,7 +322,7 @@ function mostrarResumen() {
     titulo.innerHTML = `<h2>Resumen de cita</h2><p>Verifica que la información sea correcta antes de reservar.</p>`;
     wrapper.appendChild(titulo);
 
-    if(Object.values(cita).includes('') || cita.servicios.length === 0 ) {
+    if(!cita.nombre || !cita.fecha || !cita.hora || cita.servicios.length === 0 ) {
         const alerta = document.createElement('DIV');
         alerta.classList.add('empty-state');
         alerta.textContent = 'Faltan servicios, fecha u hora para generar el resumen.';
@@ -268,20 +334,23 @@ function mostrarResumen() {
     const { nombre, fecha, hora, servicios } = cita;
 
     let subtotal = 0;
+    let duracionTotal = 0;
 
     const lista = document.createElement('DIV');
     lista.classList.add('summary-list');
 
     servicios.forEach(servicio => {
         const precio = Number(servicio.precio || 0);
+        const duracion = Number(servicio.duracion_minutos || 0);
         subtotal += precio;
+        duracionTotal += duracion;
 
         const item = document.createElement('DIV');
         item.classList.add('summary-row');
         item.innerHTML = `
             <div>
                 <strong>${servicio.nombre}</strong>
-                <span>${servicio.duracion_minutos || 30} min</span>
+                <span>${duracion} min · IVA ${servicio.iva_porcentaje || 16}%</span>
             </div>
             <b>$${precio.toFixed(2)} MXN</b>
         `;
@@ -299,12 +368,16 @@ function mostrarResumen() {
         day: 'numeric'
     });
 
+    const horaFin = calcularHoraFin(hora, duracionTotal);
+
     const detalle = document.createElement('DIV');
     detalle.classList.add('ticket-preview');
     detalle.innerHTML = `
         <div><span>Cliente</span><strong>${nombre}</strong></div>
         <div><span>Fecha</span><strong>${fechaFormateada}</strong></div>
-        <div><span>Hora</span><strong>${hora}</strong></div>
+        <div><span>Hora inicio</span><strong>${hora}</strong></div>
+        <div><span>Hora fin estimada</span><strong>${horaFin}</strong></div>
+        <div><span>Duración total</span><strong>${duracionTotal} min</strong></div>
         <div><span>Total estimado</span><strong>$${subtotal.toFixed(2)} MXN</strong></div>
     `;
     wrapper.appendChild(detalle);
@@ -318,16 +391,27 @@ function mostrarResumen() {
     resumen.appendChild(wrapper);
 }
 
+function calcularHoraFin(horaInicio, minutos) {
+    const [h, m] = horaInicio.split(':').map(Number);
+    const fecha = new Date();
+    fecha.setHours(h, m, 0, 0);
+    fecha.setMinutes(fecha.getMinutes() + minutos);
+
+    return fecha.toTimeString().substring(0, 5);
+}
+
 async function reservarCita() {
-    const { fecha, hora, servicios, id } = cita;
+    const { fecha, hora, servicios, id, notas } = cita;
 
     const idServicios = servicios.map( servicio => servicio.id );
 
     const datos = new FormData();
     datos.append('fecha', fecha);
     datos.append('hora', hora);
+    datos.append('cliente_id', id);
     datos.append('usuarioId', id);
-    datos.append('servicios', idServicios);
+    datos.append('servicios', idServicios.join(','));
+    datos.append('observaciones', notas || '');
 
     try {
         const url = `${location.origin}/api/citas`
@@ -339,17 +423,25 @@ async function reservarCita() {
         const resultado = await respuesta.json();
 
         if(resultado.resultado) {
+            const citaCreada = resultado.cita || {};
+
             Swal.fire({
                 icon: 'success',
-                title: 'Cita Creada',
-                text: 'Tu cita fue creada correctamente',
-                button: 'OK'
-            }).then(() => window.location.reload());
+                title: '¡Cita confirmada!',
+                html: `
+                    <p>${resultado.mensaje}</p>
+                    <p><strong>Horario:</strong> ${citaCreada.hora_inicio?.substring(0,5) || hora} - ${citaCreada.hora_fin?.substring(0,5) || ''}</p>
+                    <p><strong>Bloques:</strong> ${(citaCreada.bloques_generados || []).length}</p>
+                `,
+                confirmButtonText: 'OK'
+            }).then(() => {
+                window.location.reload();
+            });
         } else {
             Swal.fire({
-                icon: 'info',
-                title: 'Pendiente',
-                text: resultado.mensaje || 'La creación de citas se implementará en el siguiente issue.'
+                icon: 'warning',
+                title: 'No se pudo reservar',
+                text: resultado.mensaje || 'Revisa los datos de la cita.'
             });
         }
     } catch (error) {
