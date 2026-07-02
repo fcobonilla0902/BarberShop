@@ -26,27 +26,13 @@
                 </a>
 
                 <nav class="admin-nav">
-                    <a href="/admin" class="admin-nav__link">
-                        <span>▦</span> Dashboard
-                    </a>
-                    <a href="/admin" class="admin-nav__link">
-                        <span>🗓</span> Citas
-                    </a>
-                    <a href="/servicios" class="admin-nav__link">
-                        <span>✂</span> Servicios
-                    </a>
-                    <a href="/productos" class="admin-nav__link">
-                        <span>🧴</span> Productos
-                    </a>
-                    <a href="/productos" class="admin-nav__link">
-                        <span>📦</span> Inventario
-                    </a>
-                    <a href="#" class="admin-nav__link admin-nav__link--disabled">
-                        <span>🧾</span> Ventas
-                    </a>
-                    <a href="#" class="admin-nav__link admin-nav__link--disabled">
-                        <span>⚙</span> Configuración
-                    </a>
+                    <a href="/admin" class="admin-nav__link"><span>▦</span> Dashboard</a>
+                    <a href="/admin" class="admin-nav__link"><span>🗓</span> Citas</a>
+                    <a href="/servicios" class="admin-nav__link"><span>✂</span> Servicios</a>
+                    <a href="/productos" class="admin-nav__link"><span>🧴</span> Productos</a>
+                    <a href="/productos" class="admin-nav__link"><span>📦</span> Inventario</a>
+                    <a href="/ventas" class="admin-nav__link"><span>🧾</span> Ventas</a>
+                    <a href="#" class="admin-nav__link admin-nav__link--disabled"><span>⚙</span> Configuración</a>
                 </nav>
 
                 <div class="admin-sidebar__footer">
