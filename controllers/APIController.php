@@ -2,52 +2,39 @@
 
 namespace Controllers;
 
+use Model\Servicio;
+
 class APIController {
     public static function index() {
-        global $db;
-
         header('Content-Type: application/json; charset=utf-8');
 
-        $query = "
-            SELECT
-                s.id,
-                s.nombre,
-                s.descripcion,
-                s.duracion_minutos,
-                s.precio_base_sin_iva,
-                s.iva_porcentaje,
-                cs.nombre AS categoria
-            FROM servicios s
-            INNER JOIN categorias_servicio cs ON cs.id = s.categoria_servicio_id
-            WHERE s.activo = 1
-            ORDER BY cs.nombre, s.nombre
-        ";
+        $servicios = Servicio::activosConCategoria();
+        $respuesta = [];
 
-        $resultado = $db->query($query);
-        $servicios = [];
+        foreach($servicios as $servicio) {
+            $precioSinIva = (float)$servicio->precio_base_sin_iva;
+            $ivaPorcentaje = (float)$servicio->iva_porcentaje;
+            $ivaMonto = round($precioSinIva * ($ivaPorcentaje / 100), 2);
+            $precioFinal = round($precioSinIva + $ivaMonto, 2);
 
-        if($resultado) {
-            while($servicio = $resultado->fetch_assoc()) {
-                $precioSinIva = (float)$servicio['precio_base_sin_iva'];
-                $ivaPorcentaje = (float)$servicio['iva_porcentaje'];
-                $ivaMonto = round($precioSinIva * ($ivaPorcentaje / 100), 2);
-                $precioConIva = round($precioSinIva + $ivaMonto, 2);
+            $respuesta[] = [
+                'id' => (int)$servicio->id,
+                'nombre' => $servicio->nombre,
+                'descripcion' => $servicio->descripcion,
+                'categoria_servicio_id' => (int)$servicio->categoria_servicio_id,
+                'categoria' => $servicio->categoria,
+                'duracion_minutos' => (int)$servicio->duracion_minutos,
+                'precio_base_sin_iva' => $precioSinIva,
+                'iva_porcentaje' => $ivaPorcentaje,
+                'iva_monto' => $ivaMonto,
+                'precio_final' => $precioFinal,
 
-                $servicios[] = [
-                    'id' => (int)$servicio['id'],
-                    'nombre' => $servicio['nombre'],
-                    'descripcion' => $servicio['descripcion'],
-                    'categoria' => $servicio['categoria'],
-                    'duracion_minutos' => (int)$servicio['duracion_minutos'],
-                    'precio_base_sin_iva' => $precioSinIva,
-                    'iva_porcentaje' => $ivaPorcentaje,
-                    'iva_monto' => $ivaMonto,
-                    'precio' => $precioConIva
-                ];
-            }
+                // Compatibilidad con app.js actual
+                'precio' => $precioFinal
+            ];
         }
 
-        echo json_encode($servicios);
+        echo json_encode($respuesta);
     }
 
     public static function guardar() {

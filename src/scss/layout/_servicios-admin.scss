@@ -1,0 +1,76 @@
+@use 'base/mixins' as m;
+
+.service-actions-inline {
+    display: flex;
+    align-items: center;
+    gap: .8rem;
+    flex-wrap: wrap;
+
+    form {
+        margin: 0;
+    }
+
+    .btn {
+        min-height: 3.8rem;
+        padding: .8rem 1.2rem;
+        font-size: 1.25rem;
+    }
+}
+
+.form-panel select {
+    width: 100%;
+    min-height: 5rem;
+    border-radius: 1.4rem;
+    border: 1px solid #dfe7e3;
+    background: #f8faf9;
+    color: #15201c;
+    padding: 1.3rem 1.5rem;
+    outline: none;
+}
+
+.form-panel small {
+    display: block;
+    margin-top: .7rem;
+    color: #66766f;
+    font-size: 1.2rem;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+}
+
+.service-preview {
+    display: grid;
+    gap: .4rem;
+    padding: 1.5rem;
+    border-radius: 1.6rem;
+    background: #f5f8f7;
+    border: 1px solid #dfe7e3;
+
+    span {
+        color: #66766f;
+        font-weight: 800;
+        font-size: 1.2rem;
+        text-transform: uppercase;
+        letter-spacing: .06em;
+    }
+
+    strong {
+        color: #0b6fd3;
+        font-size: 2.6rem;
+    }
+
+    small {
+        color: #66766f;
+        margin: 0;
+    }
+}
+
+.table-modern small {
+    color: #66766f;
+    font-size: 1.2rem;
+}
