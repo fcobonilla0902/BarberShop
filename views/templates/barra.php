@@ -21,6 +21,7 @@
 
         <div class="client-topbar__actions">
             <a href="/cita" class="btn btn--ghost">Crear cita</a>
+            <a href="/mis-citas" class="btn btn--soft">Mis citas</a>
             <a href="/logout" class="btn btn--dark">Cerrar sesión</a>
         </div>
     </div>

@@ -6,6 +6,7 @@ use Controllers\AdminController;
 use Controllers\APIController;
 use Controllers\CitaController;
 use Controllers\LoginController;
+use Controllers\MisCitasController;
 use Controllers\ServicioController;
 use MVC\Router;
 
@@ -13,7 +14,7 @@ $router = new Router();
 
 // Iniciar Sesión
 $router->get('/', [LoginController::class, 'login']);
-$router->Post('/', [LoginController::class, 'login']);
+$router->post('/', [LoginController::class, 'login']);
 
 // Cerrar Sesión
 $router->get('/logout', [LoginController::class, 'logout']);
@@ -32,8 +33,12 @@ $router->post('/crear-cuenta', [LoginController::class, 'crear']);
 $router->get('/confirmar-cuenta', [LoginController::class, 'confirmar']);
 $router->get('/mensaje', [LoginController::class, 'mensaje']);
 
-// Area privada
+// Área cliente
 $router->get('/cita', [CitaController::class, 'index']);
+$router->get('/mis-citas', [MisCitasController::class, 'index']);
+$router->post('/mis-citas/cancelar', [MisCitasController::class, 'solicitarCancelacion']);
+
+// Área admin
 $router->get('/admin', [AdminController::class, 'index']);
 
 // API de citas
@@ -49,5 +54,4 @@ $router->get('/servicios/actualizar', [ServicioController::class, 'actualizar'])
 $router->post('/servicios/actualizar', [ServicioController::class, 'actualizar']);
 $router->post('/servicios/eliminar', [ServicioController::class, 'eliminar']);
 
-// Comprueba y valida las rutas, que existan y les asigna las funciones del Controlador
 $router->comprobarRutas();
