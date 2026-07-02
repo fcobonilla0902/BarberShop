@@ -1,6 +1,11 @@
 <?php
     $esAdmin = isset($_SESSION['admin']) && $_SESSION['admin'] === true;
     $bodyClass = $esAdmin ? 'layout-admin' : 'layout-public';
+    $currentPath = strtok($_SERVER['REQUEST_URI'] ?? '/', '?') ?: '/';
+
+    $activeClass = function($path) use ($currentPath) {
+        return $currentPath === $path ? ' admin-nav__link--active' : '';
+    };
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -26,12 +31,12 @@
                 </a>
 
                 <nav class="admin-nav">
-                    <a href="/admin" class="admin-nav__link"><span>▦</span> Dashboard</a>
-                    <a href="/admin" class="admin-nav__link"><span>🗓</span> Citas</a>
-                    <a href="/servicios" class="admin-nav__link"><span>✂</span> Servicios</a>
-                    <a href="/productos" class="admin-nav__link"><span>🧴</span> Productos</a>
+                    <a href="/admin" class="admin-nav__link<?php echo $activeClass('/admin'); ?>"><span>▦</span> Dashboard</a>
+                    <a href="/admin/citas" class="admin-nav__link<?php echo $activeClass('/admin/citas'); ?>"><span>🗓</span> Citas</a>
+                    <a href="/servicios" class="admin-nav__link<?php echo $activeClass('/servicios'); ?>"><span>✂</span> Servicios</a>
+                    <a href="/productos" class="admin-nav__link<?php echo $activeClass('/productos'); ?>"><span>🧴</span> Productos</a>
                     <a href="/productos" class="admin-nav__link"><span>📦</span> Inventario</a>
-                    <a href="/ventas" class="admin-nav__link"><span>🧾</span> Ventas</a>
+                    <a href="/ventas" class="admin-nav__link<?php echo $activeClass('/ventas'); ?>"><span>🧾</span> Ventas</a>
                     <a href="#" class="admin-nav__link admin-nav__link--disabled"><span>⚙</span> Configuración</a>
                 </nav>
 

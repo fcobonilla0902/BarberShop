@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../includes/app.php';
 
 use Controllers\AdminController;
+use Controllers\AdminCitasController;
 use Controllers\APIController;
 use Controllers\CitaController;
 use Controllers\LoginController;
@@ -33,6 +34,10 @@ $router->get('/mis-citas', [MisCitasController::class, 'index']);
 $router->post('/mis-citas/cancelar', [MisCitasController::class, 'solicitarCancelacion']);
 
 $router->get('/admin', [AdminController::class, 'index']);
+
+// Admin de citas
+$router->get('/admin/citas', [AdminCitasController::class, 'index']);
+$router->post('/admin/citas/estado', [AdminCitasController::class, 'cambiarEstado']);
 
 $router->get('/api/servicios', [APIController::class, 'index']);
 $router->post('/api/citas', [APIController::class, 'guardar']);
