@@ -1,0 +1,41 @@
+@use 'base/mixins' as m;
+
+.page-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.product-table {
+    th,
+    td {
+        white-space: nowrap;
+    }
+
+    td:first-child {
+        white-space: normal;
+        min-width: 22rem;
+    }
+}
+
+.status-badge--danger {
+    background: rgba(220,53,69,.16);
+    color: #c9243b;
+}
+
+.form-panel .form-grid__full {
+    @include m.tablet {
+        grid-column: 1 / -1;
+    }
+}
+
+.form-panel input[type="date"] {
+    width: 100%;
+    min-height: 5rem;
+    border-radius: 1.4rem;
+    border: 1px solid #dfe7e3;
+    background: #f8faf9;
+    color: #15201c;
+    padding: 1.3rem 1.5rem;
+    outline: none;
+}

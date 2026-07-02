@@ -7,6 +7,7 @@ use Controllers\APIController;
 use Controllers\CitaController;
 use Controllers\LoginController;
 use Controllers\MisCitasController;
+use Controllers\ProductoController;
 use Controllers\ServicioController;
 use MVC\Router;
 
@@ -53,5 +54,13 @@ $router->post('/servicios/crear', [ServicioController::class, 'crear']);
 $router->get('/servicios/actualizar', [ServicioController::class, 'actualizar']);
 $router->post('/servicios/actualizar', [ServicioController::class, 'actualizar']);
 $router->post('/servicios/eliminar', [ServicioController::class, 'eliminar']);
+
+// Productos e inventario
+$router->get('/productos', [ProductoController::class, 'index']);
+$router->get('/productos/crear', [ProductoController::class, 'crear']);
+$router->post('/productos/crear', [ProductoController::class, 'crear']);
+$router->get('/productos/lote', [ProductoController::class, 'crearLote']);
+$router->post('/productos/lote', [ProductoController::class, 'crearLote']);
+$router->post('/productos/desactivar', [ProductoController::class, 'desactivar']);
 
 $router->comprobarRutas();

@@ -35,10 +35,10 @@
                     <a href="/servicios" class="admin-nav__link">
                         <span>✂</span> Servicios
                     </a>
-                    <a href="#" class="admin-nav__link admin-nav__link--disabled">
+                    <a href="/productos" class="admin-nav__link">
                         <span>🧴</span> Productos
                     </a>
-                    <a href="#" class="admin-nav__link admin-nav__link--disabled">
+                    <a href="/productos" class="admin-nav__link">
                         <span>📦</span> Inventario
                     </a>
                     <a href="#" class="admin-nav__link admin-nav__link--disabled">
