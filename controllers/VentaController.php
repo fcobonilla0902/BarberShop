@@ -23,6 +23,65 @@ class VentaController {
         ]);
     }
 
+    public static function historial(Router $router) {
+        isAdmin();
+
+        global $db;
+
+        $fechaInicio = $_GET['fecha_inicio'] ?? date('Y-m-01');
+        $fechaFin = $_GET['fecha_fin'] ?? date('Y-m-d');
+        $q = trim($_GET['q'] ?? '');
+
+        if(!self::fechaValida($fechaInicio)) {
+            $fechaInicio = date('Y-m-01');
+        }
+
+        if(!self::fechaValida($fechaFin)) {
+            $fechaFin = date('Y-m-d');
+        }
+
+        if(strtotime($fechaInicio) > strtotime($fechaFin)) {
+            $tmp = $fechaInicio;
+            $fechaInicio = $fechaFin;
+            $fechaFin = $tmp;
+        }
+
+        $ventas = self::obtenerHistorialVentas($fechaInicio, $fechaFin, $q);
+        $metricas = self::obtenerMetricasHistorial($fechaInicio, $fechaFin, $q);
+
+        $router->render('ventas/historial', [
+            'nombre' => $_SESSION['nombre'] ?? '',
+            'ventas' => $ventas,
+            'metricas' => $metricas,
+            'fechaInicio' => $fechaInicio,
+            'fechaFin' => $fechaFin,
+            'q' => $q
+        ]);
+    }
+
+    public static function ticket(Router $router) {
+        isAdmin();
+
+        $id = filter_var($_GET['id'] ?? null, FILTER_VALIDATE_INT);
+
+        if(!$id) {
+            header('Location: /ventas/historial');
+            exit;
+        }
+
+        $ticket = self::obtenerTicket($id);
+
+        if(!$ticket) {
+            header('Location: /ventas/historial');
+            exit;
+        }
+
+        $router->render('ventas/ticket', [
+            'nombre' => $_SESSION['nombre'] ?? '',
+            'ticket' => $ticket
+        ]);
+    }
+
     public static function crear() {
         isAdmin();
         global $db;
@@ -242,6 +301,103 @@ class VentaController {
         }
     }
 
+    private static function obtenerHistorialVentas($fechaInicio, $fechaFin, $q) {
+        global $db;
+
+        $fechaInicioSQL = $db->escape_string($fechaInicio);
+        $fechaFinSQL = $db->escape_string($fechaFin);
+        $where = [
+            "DATE(v.fecha_venta) BETWEEN '{$fechaInicioSQL}' AND '{$fechaFinSQL}'"
+        ];
+
+        if($q !== '') {
+            $qSQL = $db->escape_string($q);
+            $where[] = "(
+                v.folio LIKE '%{$qSQL}%'
+                OR mp.nombre LIKE '%{$qSQL}%'
+                OR col.nombre LIKE '%{$qSQL}%'
+                OR col.apellido_paterno LIKE '%{$qSQL}%'
+            )";
+        }
+
+        $whereSQL = implode(' AND ', $where);
+
+        $query = "
+            SELECT
+                v.id,
+                v.folio,
+                v.fecha_venta,
+                v.subtotal_sin_iva,
+                v.iva_total,
+                v.total_con_iva,
+                v.costo_total_sin_iva,
+                v.utilidad_total,
+                mp.nombre AS metodo_pago,
+                CONCAT(col.nombre, ' ', col.apellido_paterno) AS colaborador,
+                (
+                    SELECT COUNT(*)
+                    FROM venta_productos vp
+                    WHERE vp.venta_id = v.id
+                ) AS productos_count,
+                (
+                    SELECT COUNT(*)
+                    FROM venta_servicios vs
+                    WHERE vs.venta_id = v.id
+                ) AS servicios_count
+            FROM ventas v
+            INNER JOIN metodos_pago mp ON mp.id = v.metodo_pago_id
+            INNER JOIN colaboradores col ON col.id = v.colaborador_id
+            WHERE {$whereSQL}
+            ORDER BY v.fecha_venta DESC
+            LIMIT 150
+        ";
+
+        return self::fetchAll($db->query($query));
+    }
+
+    private static function obtenerMetricasHistorial($fechaInicio, $fechaFin, $q) {
+        global $db;
+
+        $fechaInicioSQL = $db->escape_string($fechaInicio);
+        $fechaFinSQL = $db->escape_string($fechaFin);
+        $where = [
+            "DATE(v.fecha_venta) BETWEEN '{$fechaInicioSQL}' AND '{$fechaFinSQL}'"
+        ];
+
+        if($q !== '') {
+            $qSQL = $db->escape_string($q);
+            $where[] = "(
+                v.folio LIKE '%{$qSQL}%'
+                OR mp.nombre LIKE '%{$qSQL}%'
+                OR col.nombre LIKE '%{$qSQL}%'
+                OR col.apellido_paterno LIKE '%{$qSQL}%'
+            )";
+        }
+
+        $whereSQL = implode(' AND ', $where);
+
+        $resultado = $db->query("
+            SELECT
+                COUNT(*) AS tickets,
+                COALESCE(SUM(v.total_con_iva), 0) AS total,
+                COALESCE(SUM(v.costo_total_sin_iva), 0) AS costo,
+                COALESCE(SUM(v.utilidad_total), 0) AS utilidad
+            FROM ventas v
+            INNER JOIN metodos_pago mp ON mp.id = v.metodo_pago_id
+            INNER JOIN colaboradores col ON col.id = v.colaborador_id
+            WHERE {$whereSQL}
+        ");
+
+        $row = $resultado ? $resultado->fetch_assoc() : [];
+
+        return [
+            'tickets' => (int)($row['tickets'] ?? 0),
+            'total' => (float)($row['total'] ?? 0),
+            'costo' => (float)($row['costo'] ?? 0),
+            'utilidad' => (float)($row['utilidad'] ?? 0)
+        ];
+    }
+
     private static function obtenerServicios() {
         global $db;
         $resultado = $db->query("
@@ -314,10 +470,17 @@ class VentaController {
         $ventaId = (int)$ventaId;
 
         $resultado = $db->query("
-            SELECT v.*, mp.nombre AS metodo_pago, CONCAT(col.nombre, ' ', col.apellido_paterno) AS colaborador
+            SELECT
+                v.*,
+                mp.nombre AS metodo_pago,
+                CONCAT(col.nombre, ' ', col.apellido_paterno) AS colaborador,
+                s.nombre_comercial AS sucursal,
+                s.telefono AS sucursal_telefono,
+                s.email AS sucursal_email
             FROM ventas v
             INNER JOIN metodos_pago mp ON mp.id = v.metodo_pago_id
             INNER JOIN colaboradores col ON col.id = v.colaborador_id
+            INNER JOIN sucursales s ON s.id = v.sucursal_id
             WHERE v.id = {$ventaId}
             LIMIT 1
         ");
@@ -328,8 +491,15 @@ class VentaController {
         $items = [];
 
         $rs = $db->query("
-            SELECT s.nombre, vs.cantidad, vs.precio_unitario_sin_iva, vs.iva_monto,
-                   vs.total_linea_con_iva, vs.utilidad_linea, 'Servicio' AS tipo
+            SELECT
+                s.nombre,
+                vs.cantidad,
+                vs.precio_unitario_sin_iva,
+                vs.iva_monto,
+                vs.total_linea_con_iva,
+                vs.utilidad_linea,
+                'Servicio' AS tipo,
+                NULL AS lote
             FROM venta_servicios vs
             INNER JOIN servicios s ON s.id = vs.servicio_id
             WHERE vs.venta_id = {$ventaId}
@@ -337,10 +507,18 @@ class VentaController {
         $items = array_merge($items, self::fetchAll($rs));
 
         $rp = $db->query("
-            SELECT p.nombre, vp.cantidad, vp.precio_unitario_sin_iva, vp.iva_monto,
-                   vp.total_linea_con_iva, vp.utilidad_linea, 'Producto' AS tipo
+            SELECT
+                p.nombre,
+                vp.cantidad,
+                vp.precio_unitario_sin_iva,
+                vp.iva_monto,
+                vp.total_linea_con_iva,
+                vp.utilidad_linea,
+                'Producto' AS tipo,
+                lp.codigo_lote AS lote
             FROM venta_productos vp
             INNER JOIN productos p ON p.id = vp.producto_id
+            INNER JOIN lotes_producto lp ON lp.id = vp.lote_producto_id
             WHERE vp.venta_id = {$ventaId}
         ");
         $items = array_merge($items, self::fetchAll($rp));
@@ -364,5 +542,11 @@ class VentaController {
 
     private static function numeroSQL($numero) {
         return number_format((float)$numero, 2, '.', '');
+    }
+
+    private static function fechaValida($fecha) {
+        $partes = explode('-', $fecha);
+        if(count($partes) !== 3) return false;
+        return checkdate((int)$partes[1], (int)$partes[2], (int)$partes[0]);
     }
 }

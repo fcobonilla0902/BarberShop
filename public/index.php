@@ -35,7 +35,6 @@ $router->post('/mis-citas/cancelar', [MisCitasController::class, 'solicitarCance
 
 $router->get('/admin', [AdminController::class, 'index']);
 
-// Admin de citas
 $router->get('/admin/citas', [AdminCitasController::class, 'index']);
 $router->post('/admin/citas/estado', [AdminCitasController::class, 'cambiarEstado']);
 
@@ -59,5 +58,7 @@ $router->post('/productos/desactivar', [ProductoController::class, 'desactivar']
 
 $router->get('/ventas', [VentaController::class, 'index']);
 $router->post('/ventas', [VentaController::class, 'crear']);
+$router->get('/ventas/historial', [VentaController::class, 'historial']);
+$router->get('/ventas/ticket', [VentaController::class, 'ticket']);
 
 $router->comprobarRutas();
