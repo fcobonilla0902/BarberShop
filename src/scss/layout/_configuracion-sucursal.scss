@@ -1,0 +1,145 @@
+@use 'base/mixins' as m;
+
+.config-page {
+    max-width: 132rem;
+}
+
+.config-layout {
+    display: grid;
+    gap: 2rem;
+    align-items: start;
+
+    @include m.desktop {
+        grid-template-columns: minmax(0, 1fr) 34rem;
+    }
+}
+
+.config-form {
+    margin: 0;
+}
+
+.config-form .data-card__header {
+    margin-bottom: 2rem;
+}
+
+.config-form .form-grid {
+    gap: 1.4rem;
+}
+
+.config-form select,
+.config-form input {
+    background: rgba(255,255,255,.06) !important;
+    border-color: rgba(255,255,255,.10) !important;
+    color: #edf7f3 !important;
+}
+
+.config-form option {
+    background: #08110f;
+    color: #edf7f3;
+}
+
+.config-section-title {
+    padding: 1.3rem;
+    border-radius: 1.4rem;
+    background: rgba(18,136,255,.10);
+    border: 1px solid rgba(18,136,255,.16);
+
+    span {
+        display: block;
+        color: #8ec7ff;
+        font-size: 1.25rem;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: .06em;
+        margin-bottom: .35rem;
+    }
+
+    p {
+        color: #9aa9a3;
+        margin: 0;
+        font-size: 1.35rem;
+    }
+}
+
+.config-summary {
+    position: sticky;
+    top: 2rem;
+    display: grid;
+    gap: 1.2rem;
+    padding: 2rem;
+    border-radius: 2.2rem;
+    background: rgba(10, 19, 17, .90);
+    border: 1px solid rgba(255,255,255,.09);
+    box-shadow: 0 1.6rem 4rem rgba(0,0,0,.20);
+
+    h2 {
+        color: #edf7f3;
+        text-align: left;
+        font-size: 2.8rem;
+        line-height: 1.1;
+        margin: .8rem 0 0;
+    }
+
+    > p {
+        color: #9aa9a3;
+        margin: 0 0 .5rem;
+        font-size: 1.35rem;
+    }
+}
+
+.config-summary__box {
+    display: grid;
+    gap: .35rem;
+    padding: 1.2rem;
+    border-radius: 1.4rem;
+    background: rgba(255,255,255,.045);
+    border: 1px solid rgba(255,255,255,.06);
+
+    span {
+        color: #9aa9a3;
+        font-size: 1.15rem;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: .05em;
+    }
+
+    strong {
+        color: #edf7f3;
+        line-height: 1.35;
+    }
+
+    small {
+        color: #9aa9a3;
+        line-height: 1.45;
+    }
+}
+
+.config-summary__agenda {
+    display: grid;
+    gap: .6rem;
+    padding: 1.5rem;
+    border-radius: 1.6rem;
+    background: linear-gradient(135deg, rgba(18,136,255,.18), rgba(32,180,134,.12));
+    border: 1px solid rgba(18,136,255,.24);
+
+    span {
+        color: #9dcfff;
+        font-size: 1.15rem;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: .05em;
+    }
+
+    strong {
+        color: white;
+        font-size: 3.2rem;
+        line-height: 1;
+    }
+
+    p {
+        color: #b8dcff;
+        margin: 0;
+        font-size: 1.3rem;
+        line-height: 1.45;
+    }
+}

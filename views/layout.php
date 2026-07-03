@@ -41,7 +41,7 @@
                     <a href="/productos" class="admin-nav__link<?php echo $activeClass(['/productos', '/productos/crear']); ?>"><span>🧴</span> Productos</a>
                     <a href="/productos/lotes" class="admin-nav__link<?php echo $activeClass(['/productos/lotes', '/productos/lote']); ?>"><span>📦</span> Inventario</a>
                     <a href="/ventas" class="admin-nav__link<?php echo $activeClass(['/ventas', '/ventas/historial', '/ventas/ticket']); ?>"><span>🧾</span> Ventas</a>
-                    <a href="#" class="admin-nav__link admin-nav__link--disabled"><span>⚙</span> Configuración</a>
+                    <a href="/configuracion" class="admin-nav__link<?php echo $activeClass('/configuracion'); ?>"><span>⚙</span> Configuración</a>
                 </nav>
 
                 <div class="admin-sidebar__footer">
