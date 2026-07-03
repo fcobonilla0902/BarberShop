@@ -54,6 +54,7 @@ $router->get('/productos/crear', [ProductoController::class, 'crear']);
 $router->post('/productos/crear', [ProductoController::class, 'crear']);
 $router->get('/productos/lote', [ProductoController::class, 'crearLote']);
 $router->post('/productos/lote', [ProductoController::class, 'crearLote']);
+$router->get('/productos/lotes', [ProductoController::class, 'lotes']);
 $router->post('/productos/desactivar', [ProductoController::class, 'desactivar']);
 
 $router->get('/ventas', [VentaController::class, 'index']);

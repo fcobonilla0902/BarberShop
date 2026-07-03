@@ -9,6 +9,7 @@
         </div>
 
         <div class="page-actions">
+            <a href="/productos/lotes" class="btn btn--soft">Ver lotes</a>
             <a href="/productos/lote" class="btn btn--soft">Agregar lote</a>
             <a href="/productos/crear" class="btn btn--primary">Agregar producto</a>
         </div>
@@ -111,6 +112,7 @@
 
                             <td>
                                 <div class="service-actions-inline">
+                                    <a href="/productos/lotes?producto_id=<?php echo (int)$producto->id; ?>" class="btn btn--soft">Ver lotes</a>
                                     <a href="/productos/lote?producto_id=<?php echo (int)$producto->id; ?>" class="btn btn--soft">Agregar lote</a>
 
                                     <?php if((string)$producto->activo === '1') { ?>

@@ -1,0 +1,232 @@
+@use 'base/mixins' as m;
+
+.product-lots-page {
+    max-width: 138rem;
+}
+
+.lots-filters {
+    display: grid;
+    gap: 1.4rem;
+    margin-bottom: 1.6rem;
+    padding: 1.6rem;
+    border-radius: 2rem;
+    background: rgba(10, 19, 17, .88);
+    border: 1px solid rgba(255,255,255,.09);
+    box-shadow: 0 1.6rem 4rem rgba(0,0,0,.18);
+
+    @include m.tablet {
+        grid-template-columns: minmax(19rem, 1fr) 17rem 18rem minmax(20rem, 1fr) auto;
+        align-items: end;
+    }
+
+    .campo {
+        margin: 0;
+    }
+
+    label {
+        color: #9aa9a3 !important;
+    }
+
+    input,
+    select {
+        width: 100%;
+        min-height: 4.8rem;
+        border-radius: 1.3rem;
+        padding: 1rem 1.2rem;
+        outline: none;
+        background: rgba(255,255,255,.06);
+        border: 1px solid rgba(255,255,255,.10);
+        color: #edf7f3;
+    }
+
+    input:focus,
+    select:focus {
+        border-color: rgba(18,136,255,.65);
+        box-shadow: 0 0 0 .35rem rgba(18,136,255,.16);
+    }
+
+    option {
+        background: #08110f;
+        color: #edf7f3;
+    }
+}
+
+.lots-filters__actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+
+    .btn {
+        min-height: 4.8rem;
+        white-space: nowrap;
+    }
+}
+
+.product-lots-kpis {
+    margin-bottom: 1.6rem;
+}
+
+.product-lots-list {
+    display: grid;
+    gap: 1.4rem;
+}
+
+.lot-card {
+    display: grid;
+    gap: 1.4rem;
+    padding: 1.7rem;
+    border-radius: 2.2rem;
+    background: rgba(10, 19, 17, .90);
+    border: 1px solid rgba(255,255,255,.09);
+    box-shadow: 0 1.6rem 4rem rgba(0,0,0,.20);
+}
+
+.lot-card--empty {
+    h2 {
+        color: #edf7f3;
+        text-align: left;
+        margin: 1rem 0 .5rem;
+    }
+
+    p {
+        color: #9aa9a3;
+        margin: 0 0 1.6rem;
+    }
+
+    .btn {
+        width: fit-content;
+    }
+}
+
+.lot-card__head {
+    display: grid;
+    gap: 1rem;
+
+    @include m.tablet {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+    }
+
+    h2 {
+        color: #edf7f3;
+        text-align: left;
+        font-size: 2.3rem;
+        line-height: 1.15;
+        margin: 1rem 0 .4rem;
+    }
+
+    p {
+        color: #9aa9a3;
+        margin: 0;
+        font-size: 1.35rem;
+    }
+}
+
+.lot-expiration {
+    display: inline-flex;
+    width: fit-content;
+    align-items: center;
+    padding: .7rem 1rem;
+    border-radius: 999px;
+    font-size: 1.15rem;
+    font-weight: 900;
+    white-space: nowrap;
+}
+
+.lot-expiration--success {
+    background: rgba(32,180,134,.15);
+    color: #8ff0d0;
+    border: 1px solid rgba(32,180,134,.28);
+}
+
+.lot-expiration--warning {
+    background: rgba(245,158,11,.15);
+    color: #ffd48a;
+    border: 1px solid rgba(245,158,11,.28);
+}
+
+.lot-expiration--danger {
+    background: rgba(220,53,69,.15);
+    color: #ff9da7;
+    border: 1px solid rgba(220,53,69,.28);
+}
+
+.lot-expiration--neutral {
+    background: rgba(255,255,255,.08);
+    color: #dce8e3;
+    border: 1px solid rgba(255,255,255,.12);
+}
+
+.lot-card__grid {
+    display: grid;
+    gap: 1rem;
+
+    @include m.tablet {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    @include m.desktop {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    div {
+        padding: 1.1rem;
+        border-radius: 1.4rem;
+        background: rgba(255,255,255,.045);
+        border: 1px solid rgba(255,255,255,.06);
+        min-width: 0;
+    }
+
+    span {
+        display: block;
+        color: #9aa9a3;
+        font-size: 1.15rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: .05em;
+        margin-bottom: .45rem;
+    }
+
+    strong {
+        color: #edf7f3;
+        font-size: 1.45rem;
+        line-height: 1.3;
+    }
+}
+
+.lot-stock {
+    color: #8ff0d0 !important;
+}
+
+.lot-stock--low {
+    color: #ffd48a !important;
+}
+
+.lot-stock--empty {
+    color: #ff9da7 !important;
+}
+
+.lot-card__actions {
+    display: flex;
+    gap: .9rem;
+    flex-wrap: wrap;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255,255,255,.08);
+
+    .btn {
+        min-height: 3.9rem;
+        padding: .8rem 1.2rem;
+        font-size: 1.2rem;
+    }
+}
+
+/* Refuerzo para tabla de productos en modo oscuro */
+.layout-admin .product-table td,
+.layout-admin .product-table th {
+    border-bottom-color: rgba(255,255,255,.08);
+}
+
+.layout-admin .product-table small {
+    color: #9aa9a3;
+}
