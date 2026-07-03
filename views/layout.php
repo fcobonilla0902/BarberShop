@@ -17,7 +17,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BarberShop</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/build/css/app.css">
     <link rel="icon" href="/build/img/logo.png" type="image/png">
 </head>
@@ -27,10 +27,12 @@
         <div class="admin-shell">
             <aside class="admin-sidebar">
                 <a href="/admin" class="admin-brand">
-                    <span class="admin-brand__icon">✂</span>
+                    <span class="admin-brand__icon">
+                        <img src="/build/img/logo.png" alt="BarberShop" onerror="this.style.display='none'; this.parentElement.classList.add('admin-brand__icon--fallback');">
+                    </span>
                     <span>
                         <strong>BarberShop</strong>
-                        <small>Admin Panel</small>
+                        <small>Panel administrativo</small>
                     </span>
                 </a>
 
@@ -60,14 +62,16 @@
                 <div class="public-hero__overlay"></div>
                 <div class="public-hero__content">
                     <div class="brand-pill">
-                        <span>✂</span>
+                        <span class="brand-pill__logo">
+                            <img src="/build/img/logo.png" alt="BarberShop" onerror="this.style.display='none'; this.parentElement.classList.add('brand-pill__logo--fallback');">
+                        </span>
                         <strong>BarberShop</strong>
                     </div>
 
                     <div>
-                        <p class="eyebrow">Sistema de citas e inventario</p>
-                        <h2>Administra tu barbería sin complicarte.</h2>
-                        <p>Agenda servicios, controla clientes y prepara la operación diaria desde una interfaz clara.</p>
+                        <p class="eyebrow">Citas, ventas e inventario</p>
+                        <h2>Gestiona tu barbería desde un solo lugar.</h2>
+                        <p>Agenda servicios, controla inventario por lotes y registra ventas con tickets claros.</p>
                     </div>
                 </div>
             </section>

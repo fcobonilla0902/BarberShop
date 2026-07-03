@@ -1,7 +1,7 @@
 <div class="auth-header">
     <span class="screen-tag">Recuperación</span>
-    <h1>Olvidé mi password</h1>
-    <p>Escribe tu correo para recibir instrucciones.</p>
+    <h1>Recuperar contraseña</h1>
+    <p>Escribe tu correo y te mostraremos las instrucciones disponibles.</p>
 </div>
 
 <?php include_once __DIR__ . "/../templates/alertas.php"; ?>
@@ -12,7 +12,7 @@
         <input type="email" id="email" name="email" placeholder="correo@ejemplo.com">
     </div>
 
-    <input type="submit" class="btn btn--primary btn--full" value="Enviar instrucciones">
+    <input type="submit" class="btn btn--primary btn--full" value="Continuar">
 </form>
 
 <div class="auth-links">

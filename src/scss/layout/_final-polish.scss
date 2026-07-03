@@ -1,0 +1,523 @@
+@use 'base/mixins' as m;
+
+/* ==========================================================
+   Feature 14
+   Pulido visual final
+   ========================================================== */
+
+:root {
+    --admin-bg: #050b0a;
+    --admin-panel: rgba(10, 19, 17, .88);
+    --admin-panel-2: rgba(255,255,255,.055);
+    --admin-border: rgba(255,255,255,.09);
+    --admin-text: #edf7f3;
+    --admin-muted: #9aa9a3;
+}
+
+/* Tipografía menos pesada */
+
+body {
+    letter-spacing: -.015em;
+}
+
+h1,
+h2,
+h3,
+strong,
+.btn,
+.admin-nav__link,
+.status-badge,
+.screen-tag {
+    font-weight: 700;
+}
+
+.page-heading h1,
+.auth-header h1,
+.client-heading h1,
+.public-hero__content h2 {
+    font-weight: 800;
+}
+
+.page-heading p,
+.auth-header p,
+.client-heading p,
+.section-heading p,
+.data-card__header p {
+    line-height: 1.55;
+}
+
+/* Logo real */
+
+.admin-brand__icon,
+.brand-pill__logo {
+    overflow: hidden;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+    }
+}
+
+.admin-brand__icon {
+    background: linear-gradient(135deg, #1288ff, #20b486);
+    padding: .7rem;
+}
+
+.admin-brand__icon--fallback::before {
+    content: '✂';
+    color: white;
+}
+
+.brand-pill__logo {
+    display: grid;
+    place-items: center;
+    width: 3.2rem;
+    height: 3.2rem;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1288ff, #20b486);
+    padding: .45rem;
+}
+
+.brand-pill__logo--fallback::before {
+    content: '✂';
+    color: white;
+}
+
+/* Hero más local/proyecto, menos dependiente de internet */
+
+.public-hero {
+    background-image:
+        linear-gradient(180deg, rgba(4,10,8,.20), rgba(4,10,8,.88)),
+        url('/build/img/1.jpg');
+}
+
+.public-hero__content {
+    h2 {
+        max-width: 58rem;
+        font-size: clamp(3rem, 4.5vw, 5.8rem);
+    }
+
+    p {
+        max-width: 52rem;
+        font-size: 1.65rem;
+    }
+}
+
+/* Admin más limpio */
+
+.admin-main {
+    padding: 1.8rem;
+
+    @include m.desktop {
+        padding: 2.4rem 3rem;
+    }
+}
+
+.admin-page {
+    max-width: 136rem;
+}
+
+.admin-topbar {
+    padding: 1.2rem 1.5rem;
+    margin-bottom: 2rem;
+    border-radius: 2rem;
+}
+
+.admin-topbar h2 {
+    font-size: 2rem;
+}
+
+.admin-sidebar {
+    @include m.desktop {
+        padding: 1.8rem;
+    }
+}
+
+.admin-nav {
+    gap: .65rem;
+}
+
+.admin-nav__link {
+    min-height: 4.4rem;
+    padding: 1rem 1.2rem;
+    border-radius: 1.25rem;
+    font-size: 1.32rem;
+}
+
+.admin-sidebar__footer {
+    @include m.desktop {
+        padding: 1.2rem;
+        border-radius: 1.4rem;
+    }
+}
+
+/* Cards, tablas y filtros */
+
+.page-heading {
+    margin-bottom: 2rem;
+
+    h1 {
+        font-size: clamp(3rem, 3.1vw, 4rem);
+        margin: .8rem 0 .4rem;
+    }
+
+    p {
+        font-size: 1.45rem;
+    }
+}
+
+.data-card,
+.kpi-card,
+.form-panel,
+.admin-filter-card,
+.sales-history-filters,
+.lots-filters,
+.config-summary,
+.ticket-panel,
+.admin-appointment-card,
+.lot-card {
+    border-radius: 1.8rem;
+}
+
+.data-card,
+.form-panel {
+    padding: 1.7rem;
+}
+
+.data-card__header {
+    margin-bottom: 1.4rem;
+
+    h2 {
+        font-size: 1.95rem;
+    }
+
+    p {
+        font-size: 1.32rem;
+    }
+}
+
+.kpi-grid {
+    gap: 1.1rem;
+}
+
+.kpi-card {
+    padding: 1.5rem;
+
+    span {
+        font-size: 1.15rem;
+    }
+
+    strong {
+        font-size: 2.35rem;
+        margin: .45rem 0;
+    }
+
+    small {
+        font-size: 1.18rem;
+        line-height: 1.35;
+    }
+}
+
+.table-modern {
+    font-size: 1.25rem;
+
+    th,
+    td {
+        padding: 1rem .85rem;
+    }
+
+    th {
+        font-size: 1.05rem;
+    }
+}
+
+.status-badge,
+.screen-tag,
+.service-chip {
+    font-size: 1.05rem;
+    letter-spacing: .055em;
+}
+
+/* Botones */
+
+.btn,
+.boton,
+.boton-eliminar {
+    min-height: 4.2rem;
+    padding: 1rem 1.45rem;
+    border-radius: 1.15rem;
+    font-size: 1.32rem;
+    font-weight: 700;
+}
+
+.btn--primary,
+.boton {
+    background: linear-gradient(135deg, #1288ff, #2f9dff);
+    box-shadow: 0 1rem 2rem rgba(18,136,255,.18);
+}
+
+.btn--soft {
+    background: rgba(255,255,255,.075);
+}
+
+.btn--danger {
+    background: rgba(220,53,69,.14);
+}
+
+/* Formularios */
+
+.campo {
+    margin-bottom: 1.3rem;
+}
+
+.campo.campo--stack {
+    label {
+        font-size: 1.28rem;
+        font-weight: 700;
+    }
+
+    input,
+    select,
+    textarea {
+        min-height: 4.6rem;
+        border-radius: 1.2rem;
+        padding: 1.1rem 1.2rem;
+        font-size: 1.42rem;
+    }
+}
+
+.form-grid {
+    gap: 1.2rem;
+}
+
+.form-actions {
+    margin-top: 1.6rem;
+}
+
+/* Ventas: cards oscuras, compactas y consistentes */
+
+.layout-admin .sale-item {
+    min-height: 12.4rem;
+    padding: 1.25rem;
+    border-radius: 1.45rem;
+    background: rgba(255,255,255,.055);
+    border-color: rgba(255,255,255,.10);
+
+    strong {
+        color: var(--admin-text);
+        font-size: 1.55rem;
+    }
+
+    small {
+        color: var(--admin-muted);
+        font-size: 1.18rem;
+    }
+
+    b {
+        color: #8ec7ff;
+        font-size: 1.55rem;
+    }
+}
+
+.sales-grid {
+    gap: 1rem;
+}
+
+.ticket-panel {
+    padding: 1.65rem;
+
+    .ticket-panel__header h2 {
+        font-size: 2.05rem;
+    }
+}
+
+.ticket-totals {
+    span,
+    strong {
+        font-size: 1.35rem;
+    }
+}
+
+/* Citas cliente */
+
+.public-card:has(.client-page) {
+    width: min(100%, 120rem);
+}
+
+.client-page {
+    width: min(100%, 116rem);
+}
+
+.appointment-main {
+    padding: 1.6rem;
+}
+
+.tabs-modern {
+    gap: .8rem;
+    margin-bottom: 1.8rem;
+
+    button {
+        min-height: 4rem;
+        font-size: 1.22rem;
+    }
+}
+
+.section-heading {
+    margin-bottom: 1.7rem;
+
+    h2 {
+        font-size: clamp(2.1rem, 2.35vw, 2.9rem);
+        margin-bottom: .45rem;
+    }
+
+    p {
+        font-size: 1.38rem;
+    }
+}
+
+.listado-servicios--cards {
+    gap: 1rem;
+
+    .servicio {
+        padding: 1.35rem;
+        border-radius: 1.45rem;
+
+        h3 {
+            font-size: 1.55rem;
+            margin: .75rem 0 .4rem;
+        }
+
+        .service-meta {
+            font-size: 1.18rem;
+        }
+
+        .precio-servicio {
+            font-size: 1.75rem;
+        }
+    }
+}
+
+.appointment-summary {
+    padding: 1.7rem;
+
+    h3 {
+        font-size: 2rem;
+    }
+
+    p {
+        font-size: 1.35rem;
+    }
+}
+
+.summary-item {
+    padding: 1.1rem 0;
+}
+
+.summary-note {
+    font-size: 1.25rem;
+}
+
+/* Responsive */
+
+@include m.tablet {
+    .client-topbar,
+    .admin-topbar {
+        flex-wrap: nowrap;
+    }
+}
+
+@media (max-width: 900px) {
+    .admin-shell {
+        display: block;
+    }
+
+    .admin-sidebar {
+        position: static;
+    }
+
+    .admin-nav {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .admin-main {
+        padding: 1.4rem;
+    }
+
+    .page-heading {
+        align-items: stretch;
+    }
+
+    .page-actions,
+    .admin-topbar__actions,
+    .client-topbar__actions {
+        width: 100%;
+    }
+
+    .page-actions .btn,
+    .admin-topbar__actions .btn,
+    .client-topbar__actions .btn {
+        flex: 1;
+    }
+
+    .admin-filter-card,
+    .sales-history-filters,
+    .lots-filters {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .admin-nav {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-brand {
+        margin-bottom: 1.4rem;
+    }
+
+    .public-content {
+        padding: 1.2rem;
+    }
+
+    .public-card {
+        padding: 1.6rem;
+        border-radius: 1.6rem;
+    }
+
+    .client-topbar,
+    .admin-topbar {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .client-topbar__actions,
+    .admin-topbar__actions {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+
+    .btn,
+    .boton,
+    .boton-eliminar {
+        width: 100%;
+    }
+
+    .summary-row,
+    .ticket-preview > div {
+        display: grid;
+    }
+}
+
+/* Limpieza de vistas heredadas */
+
+.nombre-pagina,
+.descripcion-pagina {
+    margin-top: 2rem;
+}
+
+.alerta {
+    font-weight: 700;
+    text-transform: none;
+}

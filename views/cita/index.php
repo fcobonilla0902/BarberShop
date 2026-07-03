@@ -3,15 +3,15 @@
 
     <section class="client-heading">
         <span class="screen-tag">Reservación</span>
-        <h1>Crear Nueva Cita</h1>
-        <p>Elige tus servicios, selecciona fecha y revisa el resumen antes de confirmar.</p>
+        <h1>Crear cita</h1>
+        <p>Elige servicios, fecha y hora. Antes de confirmar podrás revisar el resumen.</p>
     </section>
 
     <div class="appointment-layout">
         <div class="appointment-main">
             <nav class="tabs tabs-modern">
                 <button class="actual" type="button" data-paso="1">Servicios</button>
-                <button type="button" data-paso="2">Información Cita</button>
+                <button type="button" data-paso="2">Fecha y hora</button>
                 <button type="button" data-paso="3">Resumen</button>
             </nav>
 
@@ -27,7 +27,7 @@
             <div class="seccion" id="paso-2">
                 <div class="section-heading">
                     <h2>Datos de la cita</h2>
-                    <p>Selecciona fecha, hora y agrega una nota si lo necesitas.</p>
+                    <p>Selecciona fecha, hora y agrega una nota si hace falta.</p>
                 </div>
 
                 <form class="formulario appointment-form">
@@ -57,7 +57,7 @@
 
             <div class="seccion contenido-resumen" id="paso-3">
                 <div class="section-heading">
-                    <h2>Resumen de cita</h2>
+                    <h2>Resumen</h2>
                     <p>Verifica que la información sea correcta.</p>
                 </div>
             </div>
@@ -84,7 +84,7 @@
             </div>
 
             <div class="summary-note">
-                El total final se calcula con IVA incluido en el resumen.
+                El total se calcula con IVA incluido.
             </div>
         </aside>
     </div>

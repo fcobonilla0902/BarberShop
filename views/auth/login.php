@@ -1,7 +1,7 @@
 <div class="auth-header">
     <span class="screen-tag">Acceso</span>
-    <h1>Login</h1>
-    <p>Inicia sesión con tus datos para continuar.</p>
+    <h1>Iniciar sesión</h1>
+    <p>Entra como cliente o administrador para continuar.</p>
 </div>
 
 <?php include_once __DIR__ . "/../templates/alertas.php"; ?>
@@ -17,7 +17,7 @@
         <input type="password" id="password" name="password" placeholder="Tu contraseña">
     </div>
 
-    <input type="submit" class="btn btn--primary btn--full" value="Iniciar Sesión">
+    <input type="submit" class="btn btn--primary btn--full" value="Entrar">
 
     <div class="demo-actions">
         <button class="btn btn--soft" type="submit" name="demo" value="cliente">Demo Cliente</button>
@@ -26,6 +26,6 @@
 </form>
 
 <div class="auth-links">
-    <a href="/crear-cuenta">Crear una cuenta</a>
-    <a href="/olvide">¿Olvidaste tu password?</a>
+    <a href="/crear-cuenta">Crear cuenta</a>
+    <a href="/olvide">Recuperar contraseña</a>
 </div>

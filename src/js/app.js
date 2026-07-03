@@ -210,7 +210,7 @@ function seleccionarFecha() {
         if([6, 0].includes(dia)) {
             e.target.value = '';
             cita.fecha = '';
-            mostrarAlerta('Fines de semana no permitidos', 'error', '.appointment-form');
+            mostrarAlerta('Fines de semana no disponibles', 'error', '.appointment-form');
         } else {
             cita.fecha = e.target.value;
         }
@@ -230,7 +230,7 @@ function seleccionarHora() {
         if(hora < 10 || hora > 18) {
             e.target.value = '';
             cita.hora = '';
-            mostrarAlerta('Hora no válida. Usa horario de 10:00 a 18:00', 'error', '.appointment-form');
+            mostrarAlerta('Selecciona un horario entre 10:00 y 18:00', 'error', '.appointment-form');
         } else {
             cita.hora = e.target.value;
         }
@@ -319,7 +319,7 @@ function mostrarResumen() {
 
     const titulo = document.createElement('DIV');
     titulo.classList.add('section-heading');
-    titulo.innerHTML = `<h2>Resumen de cita</h2><p>Verifica que la información sea correcta antes de reservar.</p>`;
+    titulo.innerHTML = `<h2>Resumen</h2><p>Revisa la cita antes de confirmar.</p>`;
     wrapper.appendChild(titulo);
 
     if(!cita.nombre || !cita.fecha || !cita.hora || cita.servicios.length === 0 ) {
@@ -384,7 +384,7 @@ function mostrarResumen() {
 
     const botonReservar = document.createElement('BUTTON');
     botonReservar.classList.add('btn', 'btn--primary', 'btn--full');
-    botonReservar.textContent = 'Reservar Cita';
+    botonReservar.textContent = 'Confirmar cita';
     botonReservar.onclick = reservarCita;
 
     wrapper.appendChild(botonReservar);
@@ -427,15 +427,14 @@ async function reservarCita() {
 
             Swal.fire({
                 icon: 'success',
-                title: '¡Cita confirmada!',
+                title: 'Cita confirmada',
                 html: `
                     <p>${resultado.mensaje}</p>
                     <p><strong>Horario:</strong> ${citaCreada.hora_inicio?.substring(0,5) || hora} - ${citaCreada.hora_fin?.substring(0,5) || ''}</p>
-                    <p><strong>Bloques:</strong> ${(citaCreada.bloques_generados || []).length}</p>
                 `,
-                confirmButtonText: 'OK'
+                confirmButtonText: 'Ver mis citas'
             }).then(() => {
-                window.location.reload();
+                window.location.href = '/mis-citas';
             });
         } else {
             Swal.fire({
