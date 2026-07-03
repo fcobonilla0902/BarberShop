@@ -1,6 +1,6 @@
 <div class="auth-header">
     <span class="screen-tag">Registro</span>
-    <h1>Crear Cuenta</h1>
+    <h1>Crear cuenta</h1>
     <p>Regístrate como cliente para poder agendar tus citas.</p>
 </div>
 
@@ -40,18 +40,38 @@
 
     <div class="campo campo--stack">
         <label for="password">Contraseña</label>
-        <input type="password" id="password" name="password" placeholder="Mínimo 6 caracteres">
+        <input type="password" id="password" name="password" class="js-password-field" placeholder="Mínimo 6 caracteres">
     </div>
 
     <div class="campo campo--stack">
         <label for="password2">Confirmar contraseña</label>
-        <input type="password" id="password2" name="password2" placeholder="Repite tu contraseña">
+        <input type="password" id="password2" name="password2" class="js-password-field" placeholder="Repite tu contraseña">
     </div>
 
-    <input type="submit" class="btn btn--primary btn--full form-grid__full" value="Crear Cuenta">
+    <label class="password-toggle form-grid__full">
+        <input type="checkbox" class="js-toggle-password">
+        <span>Mostrar contraseñas</span>
+    </label>
+
+    <input type="submit" class="btn btn--primary btn--full form-grid__full" value="Crear cuenta">
 </form>
 
 <div class="auth-links">
     <a href="/">¿Ya tienes cuenta? Inicia sesión</a>
-    <a href="/olvide">¿Olvidaste tu password?</a>
+    <a href="/olvide">Recuperar contraseña</a>
 </div>
+
+<script>
+(function() {
+    const toggle = document.querySelector('.js-toggle-password');
+    const fields = document.querySelectorAll('.js-password-field');
+
+    if(!toggle || fields.length === 0) return;
+
+    toggle.addEventListener('change', function() {
+        fields.forEach(field => {
+            field.type = toggle.checked ? 'text' : 'password';
+        });
+    });
+})();
+</script>
