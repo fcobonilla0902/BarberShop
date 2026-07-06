@@ -39,6 +39,7 @@
                 <nav class="admin-nav">
                     <a href="/admin" class="admin-nav__link<?php echo $activeClass('/admin'); ?>"><span>▦</span> Dashboard</a>
                     <a href="/admin/citas" class="admin-nav__link<?php echo $activeClass('/admin/citas'); ?>"><span>🗓</span> Citas</a>
+                    <a href="/clientes" class="admin-nav__link<?php echo $activeClass('/clientes'); ?>"><span>👥</span> Clientes</a>
                     <a href="/servicios" class="admin-nav__link<?php echo $activeClass(['/servicios', '/servicios/crear', '/servicios/actualizar']); ?>"><span>✂</span> Servicios</a>
                     <a href="/productos" class="admin-nav__link<?php echo $activeClass(['/productos', '/productos/crear']); ?>"><span>🧴</span> Productos</a>
                     <a href="/productos/lotes" class="admin-nav__link<?php echo $activeClass(['/productos/lotes', '/productos/lote']); ?>"><span>📦</span> Inventario</a>

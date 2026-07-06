@@ -1,0 +1,206 @@
+@use 'base/mixins' as m;
+
+.clientes-page {
+    max-width: 138rem;
+}
+
+.clients-filters {
+    display: grid;
+    gap: 1.4rem;
+    margin-bottom: 1.6rem;
+    padding: 1.6rem;
+    border-radius: 1.8rem;
+    background: rgba(10, 19, 17, .88);
+    border: 1px solid rgba(255,255,255,.09);
+    box-shadow: 0 1.6rem 4rem rgba(0,0,0,.18);
+
+    @include m.tablet {
+        grid-template-columns: 20rem minmax(24rem, 1fr) auto;
+        align-items: end;
+    }
+
+    .campo {
+        margin: 0;
+    }
+
+    label {
+        color: #9aa9a3 !important;
+    }
+
+    input,
+    select {
+        width: 100%;
+        min-height: 4.6rem;
+        border-radius: 1.2rem;
+        padding: 1rem 1.2rem;
+        outline: none;
+        background: rgba(255,255,255,.06);
+        border: 1px solid rgba(255,255,255,.10);
+        color: #edf7f3;
+    }
+
+    input:focus,
+    select:focus {
+        border-color: rgba(18,136,255,.65);
+        box-shadow: 0 0 0 .35rem rgba(18,136,255,.16);
+    }
+
+    option {
+        background: #08110f;
+        color: #edf7f3;
+    }
+}
+
+.clients-filters__actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+
+    .btn {
+        min-height: 4.6rem;
+        white-space: nowrap;
+    }
+}
+
+.clientes-kpis {
+    margin-bottom: 1.6rem;
+}
+
+.clientes-list {
+    display: grid;
+    gap: 1.3rem;
+}
+
+.cliente-card {
+    display: grid;
+    gap: 1.3rem;
+    padding: 1.6rem;
+    border-radius: 1.8rem;
+    background: rgba(10, 19, 17, .90);
+    border: 1px solid rgba(255,255,255,.09);
+    box-shadow: 0 1.6rem 4rem rgba(0,0,0,.20);
+
+    @include m.tablet {
+        grid-template-columns: 6rem minmax(0, 1fr);
+    }
+}
+
+.cliente-card--empty {
+    display: block;
+
+    h2 {
+        color: #edf7f3;
+        text-align: left;
+        margin: 1rem 0 .5rem;
+    }
+
+    p {
+        color: #9aa9a3;
+        margin: 0;
+    }
+}
+
+.cliente-card__avatar {
+    display: grid;
+    place-items: center;
+    width: 5.4rem;
+    height: 5.4rem;
+    border-radius: 1.5rem;
+    background: linear-gradient(135deg, rgba(18,136,255,.85), rgba(32,180,134,.78));
+    color: #fff;
+    font-size: 2.2rem;
+    font-weight: 800;
+}
+
+.cliente-card__body {
+    display: grid;
+    gap: 1.2rem;
+    min-width: 0;
+}
+
+.cliente-card__top {
+    display: grid;
+    gap: 1rem;
+
+    @include m.tablet {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+    }
+
+    h2 {
+        color: #edf7f3;
+        text-align: left;
+        font-size: 2.15rem;
+        line-height: 1.15;
+        margin: 0 0 .35rem;
+    }
+
+    p {
+        color: #9aa9a3;
+        margin: 0;
+        font-size: 1.32rem;
+    }
+}
+
+.cliente-card__badges {
+    display: flex;
+    gap: .7rem;
+    flex-wrap: wrap;
+
+    @include m.tablet {
+        justify-content: flex-end;
+    }
+}
+
+.cliente-card__grid {
+    display: grid;
+    gap: .9rem;
+
+    @include m.tablet {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    @include m.desktop {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    div {
+        padding: 1.05rem;
+        border-radius: 1.3rem;
+        background: rgba(255,255,255,.045);
+        border: 1px solid rgba(255,255,255,.06);
+        min-width: 0;
+    }
+
+    span {
+        display: block;
+        color: #9aa9a3;
+        font-size: 1.08rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: .05em;
+        margin-bottom: .42rem;
+    }
+
+    strong {
+        color: #edf7f3;
+        font-size: 1.32rem;
+        line-height: 1.35;
+        word-break: break-word;
+    }
+}
+
+.cliente-card__actions {
+    display: flex;
+    gap: .9rem;
+    flex-wrap: wrap;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255,255,255,.08);
+
+    .btn {
+        min-height: 3.9rem;
+        padding: .8rem 1.2rem;
+        font-size: 1.2rem;
+    }
+}

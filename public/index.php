@@ -6,6 +6,7 @@ use Controllers\AdminController;
 use Controllers\AdminCitasController;
 use Controllers\APIController;
 use Controllers\CitaController;
+use Controllers\ClienteController;
 use Controllers\ConfiguracionController;
 use Controllers\LoginController;
 use Controllers\MisCitasController;
@@ -38,6 +39,8 @@ $router->get('/admin', [AdminController::class, 'index']);
 
 $router->get('/admin/citas', [AdminCitasController::class, 'index']);
 $router->post('/admin/citas/estado', [AdminCitasController::class, 'cambiarEstado']);
+
+$router->get('/clientes', [ClienteController::class, 'index']);
 
 $router->get('/configuracion', [ConfiguracionController::class, 'index']);
 $router->post('/configuracion', [ConfiguracionController::class, 'index']);
