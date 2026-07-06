@@ -122,7 +122,6 @@ class AdminCitasController {
             }
 
             $db->commit();
-
             self::setMensaje('exito', $config['mensaje']);
         } catch(\Throwable $e) {
             $db->rollback();
@@ -155,7 +154,11 @@ class AdminCitasController {
                 scc.nombre_comercial AS sucursal,
                 GROUP_CONCAT(s.nombre ORDER BY cs.orden SEPARATOR ' + ') AS servicios,
                 SUM(cs.total_con_iva_snapshot) AS total_con_iva,
-                COUNT(DISTINCT ba.id) AS bloques_ocupados
+                (
+                    SELECT COUNT(*)
+                    FROM bloques_agenda ba
+                    WHERE ba.cita_id = c.id
+                ) AS bloques_ocupados
             FROM citas c
             INNER JOIN estados_cita ec ON ec.id = c.estado_cita_id
             INNER JOIN clientes cl ON cl.id = c.cliente_id
@@ -164,7 +167,6 @@ class AdminCitasController {
             INNER JOIN sucursales scc ON scc.id = c.sucursal_id
             INNER JOIN citas_servicios cs ON cs.cita_id = c.id
             INNER JOIN servicios s ON s.id = cs.servicio_id
-            LEFT JOIN bloques_agenda ba ON ba.cita_id = c.id
             {$joinExtra}
             WHERE {$where}
             GROUP BY
