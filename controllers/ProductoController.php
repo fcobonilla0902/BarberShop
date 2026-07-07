@@ -15,10 +15,14 @@ class ProductoController {
         isAdmin();
 
         $productos = Producto::todosConStock();
+        $productosMasVendidos = self::obtenerRankingProductosVendidos('DESC');
+        $productosMenosVendidos = self::obtenerRankingProductosVendidos('ASC');
 
         $router->render('productos/index', [
             'nombre' => $_SESSION['nombre'] ?? '',
-            'productos' => $productos
+            'productos' => $productos,
+            'productosMasVendidos' => $productosMasVendidos,
+            'productosMenosVendidos' => $productosMenosVendidos
         ]);
     }
 
@@ -313,6 +317,43 @@ class ProductoController {
         ";
 
         $db->query($query);
+    }
+
+    private static function obtenerRankingProductosVendidos($orden = 'DESC') {
+        global $db;
+
+        $ordenSQL = strtoupper($orden) === 'ASC' ? 'ASC' : 'DESC';
+
+        $query = "
+            SELECT
+                p.id,
+                p.nombre,
+                p.marca,
+                cp.nombre AS categoria,
+                ROUND(p.precio_venta_sin_iva + (p.precio_venta_sin_iva * (p.iva_porcentaje / 100)), 2) AS precio_final,
+                COALESCE(SUM(vp.cantidad), 0) AS unidades_vendidas,
+                COALESCE(SUM(vp.total_linea_con_iva), 0) AS total_vendido,
+                COALESCE(SUM(vp.utilidad_linea), 0) AS utilidad_generada,
+                COUNT(DISTINCT vp.venta_id) AS tickets
+            FROM productos p
+            INNER JOIN categorias_producto cp ON cp.id = p.categoria_producto_id
+            LEFT JOIN venta_productos vp ON vp.producto_id = p.id
+            WHERE p.activo = 1
+            GROUP BY
+                p.id,
+                p.nombre,
+                p.marca,
+                cp.nombre,
+                p.precio_venta_sin_iva,
+                p.iva_porcentaje
+            ORDER BY
+                unidades_vendidas {$ordenSQL},
+                total_vendido {$ordenSQL},
+                p.nombre ASC
+            LIMIT 5
+        ";
+
+        return self::fetchAll($db->query($query));
     }
 
     private static function fetchAll($resultado) {

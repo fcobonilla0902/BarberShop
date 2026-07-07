@@ -15,6 +15,80 @@
         </div>
     </div>
 
+    <section class="product-ranking-grid">
+        <article class="data-card product-ranking-card product-ranking-card--top">
+            <div class="data-card__header">
+                <div>
+                    <h2>Productos más vendidos</h2>
+                    <p>Ranking por unidades vendidas en tickets registrados.</p>
+                </div>
+                <span class="status-badge status-badge--success">Top 5</span>
+            </div>
+
+            <div class="product-ranking-list">
+                <?php if(empty($productosMasVendidos)) { ?>
+                    <div class="empty-state">Aún no hay ventas de productos registradas.</div>
+                <?php } ?>
+
+                <?php foreach($productosMasVendidos as $index => $productoRanking) { ?>
+                    <div class="product-ranking-item">
+                        <div class="product-ranking-item__place">#<?php echo $index + 1; ?></div>
+
+                        <div class="product-ranking-item__body">
+                            <strong><?php echo s($productoRanking['nombre']); ?></strong>
+                            <small>
+                                <?php echo s($productoRanking['marca'] ?: 'Sin marca'); ?>
+                                · <?php echo s($productoRanking['categoria']); ?>
+                            </small>
+                        </div>
+
+                        <div class="product-ranking-item__stats">
+                            <span><?php echo (int)$productoRanking['unidades_vendidas']; ?> uds.</span>
+                            <strong>$<?php echo number_format((float)$productoRanking['total_vendido'], 2); ?></strong>
+                            <small><?php echo (int)$productoRanking['tickets']; ?> ticket(s)</small>
+                        </div>
+                    </div>
+                <?php } ?>
+            </div>
+        </article>
+
+        <article class="data-card product-ranking-card product-ranking-card--low">
+            <div class="data-card__header">
+                <div>
+                    <h2>Productos menos vendidos</h2>
+                    <p>Incluye productos activos con pocas ventas o sin ventas.</p>
+                </div>
+                <span class="status-badge status-badge--warning">Bottom 5</span>
+            </div>
+
+            <div class="product-ranking-list">
+                <?php if(empty($productosMenosVendidos)) { ?>
+                    <div class="empty-state">No hay productos activos para comparar.</div>
+                <?php } ?>
+
+                <?php foreach($productosMenosVendidos as $index => $productoRanking) { ?>
+                    <div class="product-ranking-item">
+                        <div class="product-ranking-item__place">#<?php echo $index + 1; ?></div>
+
+                        <div class="product-ranking-item__body">
+                            <strong><?php echo s($productoRanking['nombre']); ?></strong>
+                            <small>
+                                <?php echo s($productoRanking['marca'] ?: 'Sin marca'); ?>
+                                · <?php echo s($productoRanking['categoria']); ?>
+                            </small>
+                        </div>
+
+                        <div class="product-ranking-item__stats">
+                            <span><?php echo (int)$productoRanking['unidades_vendidas']; ?> uds.</span>
+                            <strong>$<?php echo number_format((float)$productoRanking['total_vendido'], 2); ?></strong>
+                            <small><?php echo (int)$productoRanking['tickets']; ?> ticket(s)</small>
+                        </div>
+                    </div>
+                <?php } ?>
+            </div>
+        </article>
+    </section>
+
     <section class="data-card">
         <div class="data-card__header">
             <div>
