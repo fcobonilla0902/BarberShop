@@ -201,6 +201,12 @@
             </div>
 
             <div class="config-summary__box">
+                <span>Soporte técnico</span>
+                <strong>8112345678</strong>
+                <small>Para cualquier issue técnico escribe a uprivado2022@gmail.com</small>
+            </div>
+
+            <div class="config-summary__box">
                 <span>Dirección</span>
                 <strong>
                     <?php echo s(trim(($sucursal['calle'] ?? '') . ' ' . ($sucursal['numero_exterior'] ?? ''))); ?>
