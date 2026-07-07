@@ -106,12 +106,15 @@ class AdminController {
                 c.hora_inicio,
                 c.hora_fin,
                 ec.nombre AS estado,
-                CONCAT(cl.nombre, ' ', cl.apellido_paterno) AS cliente,
+                CASE
+                    WHEN c.cliente_id IS NULL THEN COALESCE(NULLIF(c.cliente_alias_nombre, ''), 'Cliente sin cuenta')
+                    ELSE TRIM(CONCAT(cl.nombre, ' ', cl.apellido_paterno))
+                END AS cliente,
                 CONCAT(co.nombre, ' ', co.apellido_paterno) AS barbero,
                 GROUP_CONCAT(s.nombre ORDER BY cs.orden SEPARATOR ' + ') AS servicios,
                 SUM(cs.total_con_iva_snapshot) AS total
             FROM citas c
-            INNER JOIN clientes cl ON cl.id = c.cliente_id
+            LEFT JOIN clientes cl ON cl.id = c.cliente_id
             INNER JOIN colaboradores co ON co.id = c.colaborador_id
             INNER JOIN estados_cita ec ON ec.id = c.estado_cita_id
             INNER JOIN citas_servicios cs ON cs.cita_id = c.id
@@ -123,7 +126,10 @@ class AdminController {
                 c.hora_inicio,
                 c.hora_fin,
                 ec.nombre,
-                cliente,
+                c.cliente_id,
+                c.cliente_alias_nombre,
+                cl.nombre,
+                cl.apellido_paterno,
                 barbero
             ORDER BY c.hora_inicio ASC
             LIMIT 8

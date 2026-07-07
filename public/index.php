@@ -38,6 +38,8 @@ $router->post('/mis-citas/cancelar', [MisCitasController::class, 'solicitarCance
 $router->get('/admin', [AdminController::class, 'index']);
 
 $router->get('/admin/citas', [AdminCitasController::class, 'index']);
+$router->get('/admin/citas/crear', [AdminCitasController::class, 'crear']);
+$router->post('/admin/citas/crear', [AdminCitasController::class, 'crear']);
 $router->post('/admin/citas/estado', [AdminCitasController::class, 'cambiarEstado']);
 
 $router->get('/clientes', [ClienteController::class, 'index']);

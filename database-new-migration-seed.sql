@@ -30,7 +30,6 @@ DROP TABLE IF EXISTS clientes;
 DROP TABLE IF EXISTS confirmaciones_cuenta;
 DROP TABLE IF EXISTS cuentas;
 DROP TABLE IF EXISTS sucursales;
-DROP TABLE IF EXISTS usuarios;
 
 SET FOREIGN_KEY_CHECKS = 1;
 
@@ -203,7 +202,10 @@ CREATE TABLE servicios (
 
 CREATE TABLE citas (
     id INT NOT NULL AUTO_INCREMENT,
-    cliente_id INT NOT NULL,
+    cliente_id INT NULL,
+    cliente_alias_nombre VARCHAR(120) NULL,
+    cliente_alias_telefono VARCHAR(20) NULL,
+    cliente_alias_email VARCHAR(120) NULL,
     colaborador_id INT NOT NULL,
     sucursal_id INT NOT NULL,
     estado_cita_id INT NOT NULL,
@@ -738,14 +740,14 @@ VALUES
 -- CONSULTAS RÁPIDAS DE VALIDACIÓN
 -- ==========================================================
 
-SELECT * FROM cuentas;
-SELECT * FROM clientes;
-SELECT * FROM colaboradores;
-SELECT * FROM servicios;
-SELECT * FROM citas;
-SELECT * FROM bloques_agenda;
-SELECT p.nombre, SUM(lp.cantidad_actual) AS stock_total
-FROM productos p
-LEFT JOIN lotes_producto lp ON lp.producto_id = p.id
-GROUP BY p.id, p.nombre;
-SELECT * FROM ventas;
+-- SELECT * FROM cuentas;
+-- SELECT * FROM clientes;
+-- SELECT * FROM colaboradores;
+-- SELECT * FROM servicios;
+-- SELECT * FROM citas;
+-- SELECT * FROM bloques_agenda;
+-- SELECT p.nombre, SUM(lp.cantidad_actual) AS stock_total
+-- FROM productos p
+-- LEFT JOIN lotes_producto lp ON lp.producto_id = p.id
+-- GROUP BY p.id, p.nombre;
+-- SELECT * FROM ventas;

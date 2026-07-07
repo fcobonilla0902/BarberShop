@@ -389,3 +389,94 @@
     font-size: 1.2rem;
     font-weight: 800;
 }
+
+/* ==========================================================
+   Admin: creación de citas para registrados e invitados
+   ========================================================== */
+
+.admin-create-appointment-page {
+    max-width: 138rem;
+}
+
+.admin-create-appointment-layout {
+    display: grid;
+    gap: 2rem;
+    align-items: start;
+
+    @include m.desktop {
+        grid-template-columns: minmax(0, 1fr) 34rem;
+    }
+}
+
+.admin-create-appointment-form {
+    display: grid;
+    gap: 2rem;
+}
+
+.admin-create-services {
+    display: grid;
+    gap: 1.4rem;
+}
+
+.admin-create-services__grid {
+    display: grid;
+    gap: 1rem;
+
+    @include m.tablet {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+.admin-service-option {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 1rem;
+    align-items: start;
+    padding: 1.2rem;
+    border-radius: 1.4rem;
+    background: rgba(255,255,255,.045);
+    border: 1px solid rgba(255,255,255,.08);
+    cursor: pointer;
+
+    &:hover {
+        border-color: rgba(18,136,255,.35);
+        background: rgba(18,136,255,.08);
+    }
+
+    input {
+        margin-top: .3rem;
+        width: 1.8rem;
+        height: 1.8rem;
+        accent-color: #1288ff;
+    }
+
+    span {
+        display: grid;
+        gap: .35rem;
+        min-width: 0;
+    }
+
+    b,
+    strong {
+        color: #edf7f3;
+        line-height: 1.25;
+    }
+
+    small {
+        color: #9aa9a3;
+        line-height: 1.35;
+    }
+
+    strong {
+        color: #8ec7ff;
+    }
+}
+
+.admin-create-summary {
+    position: sticky;
+    top: 2rem;
+}
+
+.admin-create-appointment-form textarea {
+    resize: vertical;
+}

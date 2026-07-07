@@ -8,7 +8,10 @@
             <p>Controla las citas reservadas, atendidas, canceladas y solicitudes de cancelación.</p>
         </div>
 
-        <a href="/admin" class="btn btn--soft">Volver al dashboard</a>
+        <div class="page-actions">
+            <a href="/admin/citas/crear" class="btn btn--primary">Nueva cita</a>
+            <a href="/admin" class="btn btn--soft">Volver al dashboard</a>
+        </div>
     </div>
 
     <?php if($mensaje) { ?>
@@ -119,6 +122,7 @@
                         <div>
                             <h2><?php echo s($cita['cliente']); ?></h2>
                             <p><?php echo s($cita['cliente_email']); ?> · <?php echo s($cita['cliente_telefono']); ?></p>
+                            <span class="status-badge status-badge--info"><?php echo s($cita['cliente_tipo'] ?? 'Registrado'); ?></span>
                         </div>
 
                         <span class="<?php echo $estadoClass; ?>">
