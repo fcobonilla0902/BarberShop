@@ -12,16 +12,36 @@
     };
 ?>
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BarberShop</title>
+    <script>
+        (function() {
+            try {
+                var theme = localStorage.getItem('barbershop-theme') || 'dark';
+                if(theme !== 'light' && theme !== 'dark') {
+                    theme = 'dark';
+                }
+                document.documentElement.setAttribute('data-theme', theme);
+            } catch(error) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        })();
+    </script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/build/css/app.css">
+    <link rel="stylesheet" href="/build/css/theme-mode.css">
     <link rel="icon" href="/build/img/logo.png" type="image/png">
+    <script src="/build/js/theme.js" defer></script>
 </head>
 <body class="<?php echo $bodyClass; ?>">
+
+    <button type="button" class="theme-toggle" data-theme-toggle aria-label="Cambiar tema" aria-pressed="false">
+        <span class="theme-toggle__icon" data-theme-icon>🌙</span>
+        <span class="theme-toggle__text" data-theme-label>Modo oscuro</span>
+    </button>
 
     <?php if($esAdmin) { ?>
         <div class="admin-shell">
