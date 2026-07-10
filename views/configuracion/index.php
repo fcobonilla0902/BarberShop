@@ -226,6 +226,10 @@
                     Si cambias esto, las nuevas citas se validarán y generarán bloques con esta duración.
                 </p>
             </div>
+            <div class="config-summary__box">
+                <span>Versión del sistema</span>
+                <strong>3.1</strong>
+            </div>
         </aside>
     </div>
 </section>
