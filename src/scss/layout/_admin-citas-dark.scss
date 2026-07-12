@@ -1,0 +1,484 @@
+@use 'base/mixins' as m;
+
+/* ==========================================================
+   Feature 10
+   Admin oscuro + administración de citas
+   ========================================================== */
+
+.layout-admin {
+    background:
+        radial-gradient(circle at top left, rgba(18, 136, 255, .14), transparent 34rem),
+        radial-gradient(circle at bottom right, rgba(32, 180, 134, .10), transparent 38rem),
+        #050b0a;
+    color: #edf7f3;
+}
+
+.admin-main {
+    background: transparent;
+}
+
+.admin-sidebar {
+    background: rgba(3, 8, 7, .94);
+    border-color: rgba(255,255,255,.08);
+    box-shadow: 1.4rem 0 4rem rgba(0,0,0,.20);
+}
+
+.admin-nav__link {
+    color: rgba(237,247,243,.76);
+    background: rgba(255,255,255,.04);
+    border-color: rgba(255,255,255,.07);
+
+    &:hover,
+    &.admin-nav__link--active {
+        background: linear-gradient(135deg, rgba(18,136,255,.24), rgba(32,180,134,.16));
+        color: #fff;
+        border-color: rgba(18,136,255,.38);
+    }
+}
+
+.admin-topbar,
+.kpi-card,
+.data-card,
+.form-panel,
+.stock-card {
+    background: rgba(10, 19, 17, .88);
+    border-color: rgba(255,255,255,.09);
+    box-shadow: 0 1.6rem 4rem rgba(0,0,0,.22);
+    color: #edf7f3;
+}
+
+.admin-topbar h2,
+.page-heading h1,
+.kpi-card strong,
+.data-card__header h2,
+.table-modern td,
+.table-modern strong,
+.stock-card strong,
+.form-panel .campo--stack label {
+    color: #edf7f3;
+}
+
+.page-heading p,
+.kpi-card span,
+.kpi-card small,
+.data-card__header p,
+.table-modern th,
+.table-modern small,
+.stock-card span,
+.date-filter label {
+    color: #9aa9a3;
+}
+
+.table-modern th,
+.table-modern td {
+    border-bottom-color: rgba(255,255,255,.08);
+}
+
+.empty-state {
+    background: rgba(255,255,255,.05);
+    color: #9aa9a3;
+    border: 1px solid rgba(255,255,255,.08);
+}
+
+.date-filter input,
+.form-panel .campo--stack input,
+.form-panel .campo--stack select,
+.form-panel .campo--stack textarea,
+.form-panel select,
+.form-panel input[type="date"],
+.admin-filter-card input,
+.admin-filter-card select {
+    background: rgba(255,255,255,.06);
+    border-color: rgba(255,255,255,.10);
+    color: #edf7f3;
+}
+
+.date-filter input:focus,
+.form-panel .campo--stack input:focus,
+.form-panel .campo--stack select:focus,
+.form-panel .campo--stack textarea:focus,
+.admin-filter-card input:focus,
+.admin-filter-card select:focus {
+    border-color: rgba(18,136,255,.65);
+    box-shadow: 0 0 0 .35rem rgba(18,136,255,.16);
+}
+
+.date-filter input::-webkit-calendar-picker-indicator,
+.admin-filter-card input::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+}
+
+.service-preview {
+    background: rgba(255,255,255,.05);
+    border-color: rgba(255,255,255,.09);
+
+    span,
+    small {
+        color: #9aa9a3;
+    }
+}
+
+.ticket-print {
+    background: #fff;
+    color: #15201c;
+}
+
+/* Página de citas admin */
+
+.admin-appointments-page {
+    max-width: 138rem;
+}
+
+.admin-appointments-heading {
+    align-items: center;
+}
+
+.admin-filter-card {
+    display: grid;
+    gap: 1.4rem;
+    margin-bottom: 1.6rem;
+    padding: 1.6rem;
+    border-radius: 2rem;
+    background: rgba(10, 19, 17, .88);
+    border: 1px solid rgba(255,255,255,.09);
+    box-shadow: 0 1.6rem 4rem rgba(0,0,0,.18);
+
+    @include m.tablet {
+        grid-template-columns: 19rem 24rem minmax(22rem, 1fr) auto;
+        align-items: end;
+    }
+
+    .campo {
+        margin: 0;
+    }
+
+    label {
+        color: #9aa9a3 !important;
+    }
+
+    input,
+    select {
+        width: 100%;
+        min-height: 4.8rem;
+        border-radius: 1.3rem;
+        padding: 1rem 1.2rem;
+        outline: none;
+    }
+}
+
+.admin-filter-card__actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+
+    .btn {
+        min-height: 4.8rem;
+        white-space: nowrap;
+    }
+}
+
+.admin-appointments-kpis {
+    margin-bottom: 1.6rem;
+}
+
+.admin-appointment-list {
+    display: grid;
+    gap: 1.4rem;
+}
+
+.admin-appointment-card {
+    display: grid;
+    gap: 1.4rem;
+    padding: 1.6rem;
+    border-radius: 2.2rem;
+    background: rgba(10, 19, 17, .90);
+    border: 1px solid rgba(255,255,255,.09);
+    box-shadow: 0 1.6rem 4rem rgba(0,0,0,.20);
+
+    @include m.tablet {
+        grid-template-columns: 14rem minmax(0, 1fr);
+        align-items: stretch;
+    }
+}
+
+.admin-appointment-card--empty {
+    display: block;
+    padding: 2rem;
+
+    h2 {
+        color: #edf7f3;
+        text-align: left;
+        margin: 1rem 0 .5rem;
+    }
+
+    p {
+        color: #9aa9a3;
+        margin: 0;
+    }
+}
+
+.admin-appointment-card__time {
+    display: grid;
+    align-content: center;
+    gap: .4rem;
+    padding: 1.4rem;
+    border-radius: 1.8rem;
+    background:
+        linear-gradient(135deg, rgba(18,136,255,.18), rgba(32,180,134,.12));
+    border: 1px solid rgba(18,136,255,.24);
+
+    span {
+        color: #9dcfff;
+        font-size: 1.25rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: .05em;
+    }
+
+    strong {
+        color: #fff;
+        font-size: 3.2rem;
+        line-height: 1;
+    }
+
+    small {
+        color: #9aa9a3;
+        font-weight: 800;
+    }
+}
+
+.admin-appointment-card__body {
+    display: grid;
+    gap: 1.4rem;
+    min-width: 0;
+}
+
+.admin-appointment-card__top {
+    display: grid;
+    gap: 1rem;
+
+    @include m.tablet {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+
+    h2 {
+        color: #edf7f3;
+        text-align: left;
+        font-size: 2.2rem;
+        line-height: 1.15;
+        margin: 0 0 .4rem;
+    }
+
+    p {
+        color: #9aa9a3;
+        margin: 0;
+        font-size: 1.35rem;
+    }
+}
+
+.appointment-status {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    padding: .7rem 1rem;
+    border-radius: 999px;
+    font-size: 1.15rem;
+    font-weight: 900;
+    white-space: nowrap;
+}
+
+.appointment-status--reserved {
+    background: rgba(18,136,255,.15);
+    color: #8ec7ff;
+    border: 1px solid rgba(18,136,255,.28);
+}
+
+.appointment-status--done {
+    background: rgba(32,180,134,.15);
+    color: #8ff0d0;
+    border: 1px solid rgba(32,180,134,.28);
+}
+
+.appointment-status--cancelled {
+    background: rgba(220,53,69,.15);
+    color: #ff9da7;
+    border: 1px solid rgba(220,53,69,.28);
+}
+
+.appointment-status--pending-cancel {
+    background: rgba(245,158,11,.15);
+    color: #ffd48a;
+    border: 1px solid rgba(245,158,11,.28);
+}
+
+.admin-appointment-details {
+    display: grid;
+    gap: 1rem;
+
+    @include m.tablet {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    @include m.desktop {
+        grid-template-columns: 1.4fr 1fr .8fr 1fr;
+    }
+
+    div {
+        padding: 1.1rem;
+        border-radius: 1.4rem;
+        background: rgba(255,255,255,.045);
+        border: 1px solid rgba(255,255,255,.06);
+        min-width: 0;
+    }
+
+    span {
+        display: block;
+        color: #9aa9a3;
+        font-size: 1.15rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: .05em;
+        margin-bottom: .45rem;
+    }
+
+    strong {
+        color: #edf7f3;
+        font-size: 1.35rem;
+        line-height: 1.3;
+    }
+}
+
+.admin-appointment-note {
+    padding: 1.2rem;
+    border-radius: 1.4rem;
+    background: rgba(18,136,255,.10);
+    border: 1px solid rgba(18,136,255,.16);
+    color: #b8dcff;
+    font-size: 1.35rem;
+    line-height: 1.45;
+}
+
+.admin-appointment-actions {
+    display: flex;
+    gap: .9rem;
+    flex-wrap: wrap;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255,255,255,.08);
+
+    form {
+        margin: 0;
+    }
+
+    .btn {
+        min-height: 3.9rem;
+        padding: .8rem 1.2rem;
+        font-size: 1.2rem;
+    }
+}
+
+.admin-appointment-locked {
+    display: inline-flex;
+    align-items: center;
+    min-height: 3.9rem;
+    padding: .8rem 1.2rem;
+    border-radius: 999px;
+    color: #9aa9a3;
+    background: rgba(255,255,255,.05);
+    font-size: 1.2rem;
+    font-weight: 800;
+}
+
+/* ==========================================================
+   Admin: creación de citas para registrados e invitados
+   ========================================================== */
+
+.admin-create-appointment-page {
+    max-width: 138rem;
+}
+
+.admin-create-appointment-layout {
+    display: grid;
+    gap: 2rem;
+    align-items: start;
+
+    @include m.desktop {
+        grid-template-columns: minmax(0, 1fr) 34rem;
+    }
+}
+
+.admin-create-appointment-form {
+    display: grid;
+    gap: 2rem;
+}
+
+.admin-create-services {
+    display: grid;
+    gap: 1.4rem;
+}
+
+.admin-create-services__grid {
+    display: grid;
+    gap: 1rem;
+
+    @include m.tablet {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+.admin-service-option {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 1rem;
+    align-items: start;
+    padding: 1.2rem;
+    border-radius: 1.4rem;
+    background: rgba(255,255,255,.045);
+    border: 1px solid rgba(255,255,255,.08);
+    cursor: pointer;
+
+    &:hover {
+        border-color: rgba(18,136,255,.35);
+        background: rgba(18,136,255,.08);
+    }
+
+    input {
+        margin-top: .3rem;
+        width: 1.8rem;
+        height: 1.8rem;
+        accent-color: #1288ff;
+    }
+
+    span {
+        display: grid;
+        gap: .35rem;
+        min-width: 0;
+    }
+
+    b,
+    strong {
+        color: #edf7f3;
+        line-height: 1.25;
+    }
+
+    small {
+        color: #9aa9a3;
+        line-height: 1.35;
+    }
+
+    strong {
+        color: #8ec7ff;
+    }
+}
+
+.admin-create-summary {
+    position: sticky;
+    top: 2rem;
+}
+
+.admin-create-appointment-form textarea {
+    resize: vertical;
+}
+
+

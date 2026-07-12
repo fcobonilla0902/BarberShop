@@ -1,0 +1,709 @@
+/* ==========================================================
+   BarberShop - Modo claro / oscuro
+   Este archivo se carga después de app.css para no tocar lógica.
+   ========================================================== */
+
+:root,
+html[data-theme="dark"] {
+    --theme-bg: #050b0a;
+    --theme-bg-soft: #08110f;
+    --theme-panel: rgba(10, 19, 17, .90);
+    --theme-panel-2: rgba(255,255,255,.06);
+    --theme-panel-3: rgba(255,255,255,.09);
+    --theme-border: rgba(255,255,255,.10);
+    --theme-border-strong: rgba(18,136,255,.45);
+    --theme-text: #edf7f3;
+    --theme-heading: #ffffff;
+    --theme-muted: #9aa9a3;
+    --theme-muted-2: #c6d4ce;
+    --theme-accent: #1288ff;
+    --theme-accent-2: #20b486;
+    --theme-accent-soft: rgba(18,136,255,.16);
+    --theme-success-soft: rgba(32,180,134,.16);
+    --theme-danger-soft: rgba(220,53,69,.16);
+    --theme-warning-soft: rgba(245,158,11,.16);
+    --theme-shadow: 0 1.6rem 4rem rgba(0,0,0,.24);
+    --theme-input-bg: rgba(255,255,255,.065);
+    --theme-input-border: rgba(255,255,255,.11);
+    color-scheme: dark;
+}
+
+html[data-theme="light"] {
+    --theme-bg: #f4f8fb;
+    --theme-bg-soft: #eef5f3;
+    --theme-panel: rgba(255,255,255,.94);
+    --theme-panel-2: rgba(12,24,20,.045);
+    --theme-panel-3: rgba(18,136,255,.075);
+    --theme-border: rgba(12,24,20,.10);
+    --theme-border-strong: rgba(18,136,255,.34);
+    --theme-text: #16231f;
+    --theme-heading: #0e1d19;
+    --theme-muted: #65756f;
+    --theme-muted-2: #44534d;
+    --theme-accent: #0d7fe6;
+    --theme-accent-2: #17a77b;
+    --theme-accent-soft: rgba(13,127,230,.12);
+    --theme-success-soft: rgba(23,167,123,.12);
+    --theme-danger-soft: rgba(220,53,69,.12);
+    --theme-warning-soft: rgba(245,158,11,.14);
+    --theme-shadow: 0 1.4rem 3.8rem rgba(12,24,20,.10);
+    --theme-input-bg: #ffffff;
+    --theme-input-border: rgba(12,24,20,.14);
+    color-scheme: light;
+}
+
+body {
+    transition: background-color .22s ease, color .22s ease;
+}
+
+html[data-theme="dark"] body,
+html[data-theme="dark"] .layout-admin,
+html[data-theme="dark"] .layout-public {
+    background:
+        radial-gradient(circle at top left, rgba(18,136,255,.14), transparent 34rem),
+        radial-gradient(circle at bottom right, rgba(32,180,134,.10), transparent 38rem),
+        var(--theme-bg) !important;
+    color: var(--theme-text) !important;
+}
+
+html[data-theme="light"] body,
+html[data-theme="light"] .layout-admin,
+html[data-theme="light"] .layout-public {
+    background:
+        radial-gradient(circle at top left, rgba(18,136,255,.10), transparent 34rem),
+        radial-gradient(circle at bottom right, rgba(32,180,134,.10), transparent 38rem),
+        linear-gradient(180deg, #f8fbfd 0%, #eef6f3 100%) !important;
+    color: var(--theme-text) !important;
+}
+
+/* Toggle global */
+.theme-toggle {
+    position: fixed;
+    right: 1.6rem;
+    bottom: 1.6rem;
+    z-index: 80;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .75rem;
+    min-height: 4.4rem;
+    padding: .95rem 1.25rem;
+    border-radius: 999px;
+    border: 1px solid var(--theme-border);
+    background: var(--theme-panel);
+    color: var(--theme-heading);
+    box-shadow: var(--theme-shadow);
+    font-weight: 800;
+    font-size: 1.25rem;
+    cursor: pointer;
+    backdrop-filter: blur(14px);
+    transition: transform .18s ease, border-color .18s ease, background-color .18s ease;
+}
+
+.theme-toggle:hover {
+    transform: translateY(-1px);
+    border-color: var(--theme-border-strong);
+}
+
+.theme-toggle__icon {
+    display: grid;
+    place-items: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 50%;
+    background: var(--theme-accent-soft);
+}
+
+@media (min-width: 1024px) {
+    .theme-toggle {
+        /* top: 1.8rem; */
+        bottom: auto;
+    }
+}
+
+@media (max-width: 640px) {
+    .theme-toggle {
+        right: 1rem;
+        bottom: 1rem;
+        min-height: 4rem;
+        padding: .8rem 1rem;
+    }
+
+    .theme-toggle__text {
+        display: none;
+    }
+}
+
+/* Corrección modo oscuro: tabs seleccionados más claros y legibles */
+html[data-theme="dark"] .tabs-modern button,
+html[data-theme="dark"] .tabs button {
+    background: rgba(255,255,255,.075) !important;
+    color: #dbe8e2 !important;
+    border-color: rgba(255,255,255,.13) !important;
+}
+
+html[data-theme="dark"] .tabs-modern button.actual,
+html[data-theme="dark"] .tabs button.actual {
+    background: linear-gradient(135deg, #1288ff, #20b486) !important;
+    color: #ffffff !important;
+    border-color: rgba(142,199,255,.70) !important;
+    box-shadow: 0 1.2rem 2.6rem rgba(18,136,255,.22) !important;
+    opacity: 1 !important;
+}
+
+/* Base compartida */
+.public-card,
+.appointment-main,
+.appointment-summary,
+.data-card,
+.form-panel,
+.kpi-card,
+.stock-card,
+.admin-filter-card,
+.sales-history-filters,
+.lots-filters,
+.config-summary,
+.ticket-panel,
+.admin-appointment-card,
+.lot-card,
+.cliente-card,
+.client-topbar,
+.admin-topbar,
+.config-summary__box,
+.config-summary__agenda,
+.ticket-item,
+.summary-row,
+.ticket-preview > div,
+.empty-state,
+.service-preview,
+.sale-item,
+.stock-card,
+.appointment-card,
+.lot-card__grid div,
+.cliente-card__grid div,
+.admin-appointment-details div,
+.ticket-detail-grid div {
+    transition: background-color .22s ease, border-color .22s ease, color .22s ease, box-shadow .22s ease;
+}
+
+/* Paneles y tarjetas en claro */
+html[data-theme="light"] .public-card,
+html[data-theme="light"] .appointment-main,
+html[data-theme="light"] .appointment-summary,
+html[data-theme="light"] .data-card,
+html[data-theme="light"] .form-panel,
+html[data-theme="light"] .kpi-card,
+html[data-theme="light"] .stock-card,
+html[data-theme="light"] .admin-filter-card,
+html[data-theme="light"] .sales-history-filters,
+html[data-theme="light"] .lots-filters,
+html[data-theme="light"] .config-summary,
+html[data-theme="light"] .ticket-panel,
+html[data-theme="light"] .admin-appointment-card,
+html[data-theme="light"] .lot-card,
+html[data-theme="light"] .cliente-card,
+html[data-theme="light"] .appointment-card,
+html[data-theme="light"] .client-topbar,
+html[data-theme="light"] .admin-topbar {
+    background: var(--theme-panel) !important;
+    border-color: var(--theme-border) !important;
+    color: var(--theme-text) !important;
+    box-shadow: var(--theme-shadow) !important;
+}
+
+html[data-theme="light"] .admin-main {
+    background: transparent !important;
+}
+
+html[data-theme="light"] .public-content {
+    background: transparent !important;
+}
+
+/* Sidebar admin */
+html[data-theme="light"] .admin-sidebar {
+    background: rgba(255,255,255,.92) !important;
+    border-color: var(--theme-border) !important;
+    box-shadow: 1.4rem 0 4rem rgba(12,24,20,.08) !important;
+    color: var(--theme-text) !important;
+}
+
+html[data-theme="light"] .admin-brand,
+html[data-theme="light"] .admin-brand:hover,
+html[data-theme="light"] .admin-brand strong {
+    color: var(--theme-heading) !important;
+}
+
+html[data-theme="light"] .admin-brand small,
+html[data-theme="light"] .admin-sidebar__footer p {
+    color: var(--theme-muted) !important;
+}
+
+html[data-theme="light"] .admin-sidebar__footer {
+    background: rgba(12,24,20,.045) !important;
+    border: 1px solid var(--theme-border) !important;
+}
+
+html[data-theme="light"] .admin-sidebar__footer strong {
+    color: var(--theme-heading) !important;
+}
+
+html[data-theme="light"] .admin-nav__link {
+    background: rgba(12,24,20,.035) !important;
+    border-color: rgba(12,24,20,.08) !important;
+    color: #485953 !important;
+}
+
+html[data-theme="light"] .admin-nav__link:hover,
+html[data-theme="light"] .admin-nav__link.admin-nav__link--active {
+    background: linear-gradient(135deg, rgba(13,127,230,.13), rgba(23,167,123,.11)) !important;
+    border-color: var(--theme-border-strong) !important;
+    color: var(--theme-heading) !important;
+}
+
+/* Hero público */
+html[data-theme="light"] .public-hero__overlay {
+    background:
+        linear-gradient(135deg, rgba(255,255,255,.08), rgba(8,17,15,.72)),
+        radial-gradient(circle at bottom left, rgba(18,136,255,.24), transparent 32rem) !important;
+}
+
+html[data-theme="light"] .brand-pill {
+    background: rgba(255,255,255,.72) !important;
+    border-color: rgba(255,255,255,.62) !important;
+    color: #12211d !important;
+}
+
+html[data-theme="light"] .brand-pill strong {
+    color: #12211d !important;
+}
+
+/* Títulos y texto */
+html[data-theme="light"] h1,
+html[data-theme="light"] h2,
+html[data-theme="light"] h3,
+html[data-theme="light"] strong,
+html[data-theme="light"] .page-heading h1,
+html[data-theme="light"] .auth-header h1,
+html[data-theme="light"] .client-heading h1,
+html[data-theme="light"] .section-heading h2,
+html[data-theme="light"] .data-card__header h2,
+html[data-theme="light"] .admin-topbar h2,
+html[data-theme="light"] .kpi-card strong,
+html[data-theme="light"] .stock-card strong,
+html[data-theme="light"] .table-modern strong,
+html[data-theme="light"] .ticket-panel__header h2,
+html[data-theme="light"] .appointment-summary h3,
+html[data-theme="light"] .cliente-card__top h2,
+html[data-theme="light"] .lot-card__head h2,
+html[data-theme="light"] .admin-appointment-card__top h2,
+html[data-theme="light"] .empty-appointment h2,
+html[data-theme="light"] .lot-card--empty h2,
+html[data-theme="light"] .cliente-card--empty h2,
+html[data-theme="light"] .admin-appointment-card--empty h2,
+html[data-theme="light"] .ticket-preview strong,
+html[data-theme="light"] .summary-row strong,
+html[data-theme="light"] .summary-row b,
+html[data-theme="light"] .ticket-item strong,
+html[data-theme="light"] .ticket-totals strong,
+html[data-theme="light"] .config-summary h2,
+html[data-theme="light"] .config-summary__box strong,
+html[data-theme="light"] .ticket-detail-grid strong {
+    color: var(--theme-heading) !important;
+}
+
+html[data-theme="light"] p,
+html[data-theme="light"] small,
+html[data-theme="light"] .page-heading p,
+html[data-theme="light"] .auth-header p,
+html[data-theme="light"] .client-heading p,
+html[data-theme="light"] .section-heading p,
+html[data-theme="light"] .data-card__header p,
+html[data-theme="light"] .appointment-summary p,
+html[data-theme="light"] .kpi-card span,
+html[data-theme="light"] .kpi-card small,
+html[data-theme="light"] .table-modern th,
+html[data-theme="light"] .table-modern small,
+html[data-theme="light"] .stock-card span,
+html[data-theme="light"] .date-filter label,
+html[data-theme="light"] .label-muted,
+html[data-theme="light"] .cliente-card__top p,
+html[data-theme="light"] .lot-card__head p,
+html[data-theme="light"] .admin-appointment-card__top p,
+html[data-theme="light"] .ticket-panel__header p,
+html[data-theme="light"] .ticket-item span,
+html[data-theme="light"] .ticket-totals span,
+html[data-theme="light"] .config-summary > p,
+html[data-theme="light"] .config-summary__box span,
+html[data-theme="light"] .config-summary__box small,
+html[data-theme="light"] .ticket-detail-grid span {
+    color: var(--theme-muted) !important;
+}
+
+/* Inputs */
+html[data-theme="light"] input,
+html[data-theme="light"] select,
+html[data-theme="light"] textarea,
+html[data-theme="light"] .campo.campo--stack input,
+html[data-theme="light"] .campo.campo--stack select,
+html[data-theme="light"] .campo.campo--stack textarea,
+html[data-theme="light"] .form-panel .campo--stack input,
+html[data-theme="light"] .form-panel .campo--stack select,
+html[data-theme="light"] .form-panel .campo--stack textarea,
+html[data-theme="light"] .date-filter input,
+html[data-theme="light"] .admin-filter-card input,
+html[data-theme="light"] .admin-filter-card select,
+html[data-theme="light"] .sales-history-filters input,
+html[data-theme="light"] .lots-filters input,
+html[data-theme="light"] .lots-filters select,
+html[data-theme="light"] .clients-filters input,
+html[data-theme="light"] .clients-filters select,
+html[data-theme="light"] .ticket-panel select,
+html[data-theme="light"] .config-form input,
+html[data-theme="light"] .config-form select {
+    background: var(--theme-input-bg) !important;
+    border-color: var(--theme-input-border) !important;
+    color: var(--theme-text) !important;
+}
+
+html[data-theme="light"] input:focus,
+html[data-theme="light"] select:focus,
+html[data-theme="light"] textarea:focus {
+    border-color: var(--theme-border-strong) !important;
+    box-shadow: 0 0 0 .35rem rgba(13,127,230,.12) !important;
+}
+
+html[data-theme="light"] input::placeholder,
+html[data-theme="light"] textarea::placeholder {
+    color: #95a29d !important;
+}
+
+html[data-theme="light"] option {
+    background: #ffffff !important;
+    color: var(--theme-text) !important;
+}
+
+html[data-theme="light"] input::-webkit-calendar-picker-indicator {
+    filter: none !important;
+}
+
+/* Tabs y selector de servicios */
+html[data-theme="light"] .tabs-modern button,
+html[data-theme="light"] .tabs button {
+    background: #eef4f8 !important;
+    border: 1px solid rgba(12,24,20,.09) !important;
+    color: #5d6f68 !important;
+}
+
+html[data-theme="light"] .tabs-modern button.actual,
+html[data-theme="light"] .tabs button.actual {
+    background: linear-gradient(135deg, #0d7fe6, #17a77b) !important;
+    color: #ffffff !important;
+    border-color: rgba(13,127,230,.34) !important;
+    box-shadow: 0 1.2rem 2.6rem rgba(13,127,230,.17) !important;
+}
+
+html[data-theme="light"] .listado-servicios--cards .servicio,
+html[data-theme="light"] .sale-item,
+html[data-theme="light"] .ticket-item,
+html[data-theme="light"] .summary-row,
+html[data-theme="light"] .ticket-preview > div,
+html[data-theme="light"] .summary-item,
+html[data-theme="light"] .config-summary__box,
+html[data-theme="light"] .lot-card__grid div,
+html[data-theme="light"] .cliente-card__grid div,
+html[data-theme="light"] .admin-appointment-details div,
+html[data-theme="light"] .ticket-detail-grid div {
+    background: rgba(12,24,20,.035) !important;
+    border-color: rgba(12,24,20,.08) !important;
+    color: var(--theme-text) !important;
+}
+
+html[data-theme="light"] .listado-servicios--cards .servicio:hover,
+html[data-theme="light"] .sale-item:hover {
+    background: rgba(13,127,230,.08) !important;
+    border-color: rgba(13,127,230,.28) !important;
+}
+
+html[data-theme="light"] .listado-servicios--cards .servicio.seleccionado,
+html[data-theme="dark"] .listado-servicios--cards .servicio.seleccionado {
+    background: linear-gradient(135deg, rgba(18,136,255,.20), rgba(32,180,134,.14)) !important;
+    border-color: rgba(18,136,255,.58) !important;
+    box-shadow: 0 1.4rem 3rem rgba(18,136,255,.14) !important;
+}
+
+html[data-theme="light"] .listado-servicios--cards .servicio p,
+html[data-theme="light"] .listado-servicios--cards .servicio h3,
+html[data-theme="light"] .sale-item strong,
+html[data-theme="light"] .ticket-item strong {
+    color: var(--theme-heading) !important;
+}
+
+html[data-theme="light"] .listado-servicios--cards .servicio .precio-servicio,
+html[data-theme="light"] .sale-item b,
+html[data-theme="light"] .ticket-item b,
+html[data-theme="light"] .appointment-total,
+html[data-theme="light"] .ticket-totals div:last-child strong {
+    color: #0b6fd3 !important;
+}
+
+/* Badges */
+html[data-theme="light"] .screen-tag,
+html[data-theme="light"] .eyebrow,
+html[data-theme="light"] .status-badge,
+html[data-theme="light"] .service-chip,
+html[data-theme="light"] .appointment-status {
+    background: var(--theme-accent-soft) !important;
+    color: #0b6fd3 !important;
+    border-color: rgba(13,127,230,.22) !important;
+}
+
+html[data-theme="light"] .status-badge--success,
+html[data-theme="light"] .lot-expiration--success,
+html[data-theme="light"] .appointment-status--done {
+    background: var(--theme-success-soft) !important;
+    color: #087d59 !important;
+    border-color: rgba(23,167,123,.24) !important;
+}
+
+html[data-theme="light"] .status-badge--warning,
+html[data-theme="light"] .lot-expiration--warning,
+html[data-theme="light"] .appointment-status--pending-cancel {
+    background: var(--theme-warning-soft) !important;
+    color: #946200 !important;
+    border-color: rgba(245,158,11,.28) !important;
+}
+
+html[data-theme="light"] .status-badge--danger,
+html[data-theme="light"] .lot-expiration--danger,
+html[data-theme="light"] .appointment-status--cancelled,
+html[data-theme="light"] .status-badge--danger,
+html[data-theme="light"] .btn--danger,
+html[data-theme="light"] .boton-eliminar {
+    background: var(--theme-danger-soft) !important;
+    color: #b42335 !important;
+    border-color: rgba(220,53,69,.26) !important;
+}
+
+html[data-theme="light"] .appointment-status--reserved,
+html[data-theme="light"] .status-badge--info {
+    background: var(--theme-accent-soft) !important;
+    color: #0b6fd3 !important;
+    border-color: rgba(13,127,230,.24) !important;
+}
+
+/* Botones */
+html[data-theme="light"] .btn--soft,
+html[data-theme="light"] .btn--ghost,
+html[data-theme="light"] .btn--dark {
+    background: rgba(12,24,20,.045) !important;
+    border: 1px solid rgba(12,24,20,.10) !important;
+    color: var(--theme-heading) !important;
+}
+
+html[data-theme="light"] .btn--primary,
+html[data-theme="light"] .boton {
+    background: linear-gradient(135deg, #0d7fe6, #2f9dff) !important;
+    color: #ffffff !important;
+    box-shadow: 0 1rem 2rem rgba(13,127,230,.18) !important;
+}
+
+html[data-theme="light"] .btn:hover,
+html[data-theme="light"] .boton:hover,
+html[data-theme="light"] .boton-eliminar:hover {
+    opacity: .96;
+}
+
+/* Tablas */
+html[data-theme="light"] .table-modern th,
+html[data-theme="light"] .table-modern td,
+html[data-theme="light"] .product-table th,
+html[data-theme="light"] .product-table td {
+    border-bottom-color: rgba(12,24,20,.08) !important;
+}
+
+html[data-theme="light"] .table-modern td,
+html[data-theme="light"] .product-table td {
+    color: var(--theme-text) !important;
+}
+
+/* Componentes especiales */
+html[data-theme="light"] .empty-state,
+html[data-theme="light"] .empty-appointment,
+html[data-theme="light"] .admin-appointment-card--empty,
+html[data-theme="light"] .lot-card--empty,
+html[data-theme="light"] .cliente-card--empty {
+    background: rgba(12,24,20,.035) !important;
+    border: 1px solid rgba(12,24,20,.08) !important;
+    color: var(--theme-muted) !important;
+}
+
+html[data-theme="light"] .summary-note,
+html[data-theme="light"] .admin-appointment-note,
+html[data-theme="light"] .config-section-title,
+html[data-theme="light"] .config-summary__agenda {
+    background: linear-gradient(135deg, rgba(13,127,230,.10), rgba(23,167,123,.08)) !important;
+    border-color: rgba(13,127,230,.18) !important;
+    color: #315f82 !important;
+}
+
+html[data-theme="light"] .config-summary__agenda strong,
+html[data-theme="light"] .config-summary__agenda span {
+    color: #0b6fd3 !important;
+}
+
+html[data-theme="light"] .config-summary__agenda p,
+html[data-theme="light"] .config-section-title p {
+    color: #4b6760 !important;
+}
+
+html[data-theme="light"] .cliente-card__avatar {
+    box-shadow: 0 1rem 2.2rem rgba(13,127,230,.16);
+}
+
+html[data-theme="light"] .ticket-print,
+html[data-theme="light"] .ticket-detail-print {
+    background: #ffffff !important;
+    color: #15201c !important;
+    border-color: #cfd8d3 !important;
+}
+
+html[data-theme="light"] .ticket-print *,
+html[data-theme="light"] .ticket-detail-print * {
+    color: #15201c;
+}
+
+/* Alertas */
+html[data-theme="light"] .alerta.error {
+    background: rgba(220,53,69,.12) !important;
+    color: #a61e2e !important;
+    border-color: rgba(220,53,69,.22) !important;
+}
+
+html[data-theme="light"] .alerta.exito {
+    background: rgba(23,167,123,.12) !important;
+    color: #087d59 !important;
+    border-color: rgba(23,167,123,.22) !important;
+}
+
+/* Password toggle */
+html[data-theme="light"] .password-toggle {
+    background: rgba(12,24,20,.045) !important;
+    border-color: rgba(12,24,20,.10) !important;
+    color: var(--theme-text) !important;
+}
+
+/* Mantener contraste del hero público */
+.public-hero__content h2,
+.public-hero__content p,
+.public-hero .eyebrow {
+    color: #ffffff !important;
+}
+
+.public-hero .eyebrow {
+    background: rgba(18,136,255,.28) !important;
+    border-color: rgba(142,199,255,.36) !important;
+}
+
+/* Scrollbars suaves */
+html[data-theme="light"] ::-webkit-scrollbar-thumb {
+    background: rgba(13,127,230,.25);
+}
+
+html[data-theme="dark"] ::-webkit-scrollbar-thumb {
+    background: rgba(142,199,255,.22);
+}
+
+/* ==========================================================
+   Fix modo claro: hero público con fotografía
+   La fotografía se conserva como bloque oscuro para que el texto
+   siempre sea legible, aunque el resto del sistema esté en modo claro.
+   ========================================================== */
+html[data-theme="light"] body.layout-public .public-shell .public-hero {
+    background-image:
+        linear-gradient(180deg, rgba(4,10,8,.24), rgba(4,10,8,.92)),
+        url('/build/img/1.jpg') !important;
+    background-color: #07110f !important;
+}
+
+html[data-theme="light"] body.layout-public .public-shell .public-hero .public-hero__overlay {
+    background:
+        linear-gradient(135deg, rgba(0,0,0,.10), rgba(8,17,15,.82)),
+        radial-gradient(circle at bottom left, rgba(18,136,255,.30), transparent 32rem) !important;
+}
+
+html[data-theme="light"] body.layout-public .public-shell .public-hero .public-hero__content h2,
+html[data-theme="light"] body.layout-public .public-shell .public-hero .public-hero__content p:not(.eyebrow) {
+    color: #ffffff !important;
+    text-shadow: 0 .25rem 1.3rem rgba(0,0,0,.62) !important;
+}
+
+html[data-theme="light"] body.layout-public .public-shell .public-hero .public-hero__content .eyebrow {
+    color: #ffffff !important;
+    background: rgba(18,136,255,.40) !important;
+    border-color: rgba(142,199,255,.52) !important;
+    box-shadow: 0 1rem 2.4rem rgba(0,0,0,.20) !important;
+}
+
+html[data-theme="light"] body.layout-public .public-shell .public-hero .brand-pill {
+    background: rgba(255,255,255,.84) !important;
+    border-color: rgba(255,255,255,.70) !important;
+    color: #12211d !important;
+    box-shadow: 0 1rem 2.4rem rgba(0,0,0,.18) !important;
+}
+
+html[data-theme="light"] body.layout-public .public-shell .public-hero .brand-pill strong {
+    color: #12211d !important;
+    text-shadow: none !important;
+}
+
+/* ==========================================================
+   Fix modo claro: legibilidad de labels, ayudas y placeholders
+   Algunos labels heredaban colores claros del modo oscuro.
+   ========================================================== */
+html[data-theme="light"] label,
+html[data-theme="light"] .campo label,
+html[data-theme="light"] .campo.campo--stack label,
+html[data-theme="light"] .form-panel label,
+html[data-theme="light"] .form-panel .campo--stack label,
+html[data-theme="light"] .date-filter label,
+html[data-theme="light"] .admin-filter-card label,
+html[data-theme="light"] .sales-history-filters label,
+html[data-theme="light"] .lots-filters label,
+html[data-theme="light"] .clients-filters label,
+html[data-theme="light"] .ticket-panel .campo label,
+html[data-theme="light"] .config-form label {
+    color: #30443d !important;
+    opacity: 1 !important;
+    font-weight: 800 !important;
+}
+
+html[data-theme="light"] .form-panel small,
+html[data-theme="light"] .campo small,
+html[data-theme="light"] .config-form small,
+html[data-theme="light"] .date-filter small,
+html[data-theme="light"] .service-preview small,
+html[data-theme="light"] .admin-filter-card small,
+html[data-theme="light"] .sales-history-filters small,
+html[data-theme="light"] .lots-filters small,
+html[data-theme="light"] .clients-filters small {
+    color: #526760 !important;
+    opacity: 1 !important;
+}
+
+html[data-theme="light"] input::placeholder,
+html[data-theme="light"] textarea::placeholder,
+html[data-theme="light"] .campo.campo--stack input::placeholder,
+html[data-theme="light"] .campo.campo--stack textarea::placeholder,
+html[data-theme="light"] .form-panel input::placeholder,
+html[data-theme="light"] .form-panel textarea::placeholder {
+    color: #71827b !important;
+    opacity: 1 !important;
+}
+
+html[data-theme="light"] input:disabled,
+html[data-theme="light"] textarea:disabled,
+html[data-theme="light"] select:disabled {
+    color: #53665f !important;
+    background: #eef4f2 !important;
+    opacity: 1 !important;
+}

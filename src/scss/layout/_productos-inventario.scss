@@ -1,0 +1,148 @@
+@use 'base/mixins' as m;
+
+.page-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.product-table {
+    th,
+    td {
+        white-space: nowrap;
+    }
+
+    td:first-child {
+        white-space: normal;
+        min-width: 22rem;
+    }
+}
+
+.status-badge--danger {
+    background: rgba(220,53,69,.16);
+    color: #c9243b;
+}
+
+.form-panel .form-grid__full {
+    @include m.tablet {
+        grid-column: 1 / -1;
+    }
+}
+
+.form-panel input[type="date"] {
+    width: 100%;
+    min-height: 5rem;
+    border-radius: 1.4rem;
+    border: 1px solid #dfe7e3;
+    background: #f8faf9;
+    color: #15201c;
+    padding: 1.3rem 1.5rem;
+    outline: none;
+}
+
+.product-ranking-grid {
+    display: grid;
+    gap: 1.4rem;
+    margin-bottom: 1.6rem;
+
+    @include m.desktop {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-items: start;
+    }
+}
+
+.product-ranking-card {
+    min-height: 100%;
+}
+
+.product-ranking-list {
+    display: grid;
+    gap: 1rem;
+}
+
+.product-ranking-item {
+    display: grid;
+    grid-template-columns: 4.4rem minmax(0, 1fr);
+    gap: 1rem;
+    align-items: center;
+    padding: 1.1rem;
+    border-radius: 1.4rem;
+    background: rgba(255,255,255,.045);
+    border: 1px solid rgba(255,255,255,.07);
+
+    @include m.tablet {
+        grid-template-columns: 4.4rem minmax(0, 1fr) auto;
+    }
+}
+
+.product-ranking-item__place {
+    display: grid;
+    place-items: center;
+    width: 4.4rem;
+    height: 4.4rem;
+    border-radius: 1.3rem;
+    background: rgba(18,136,255,.15);
+    color: #8ec7ff;
+    font-weight: 900;
+}
+
+.product-ranking-item__body {
+    min-width: 0;
+
+    strong {
+        display: block;
+        color: #edf7f3;
+        font-size: 1.45rem;
+        line-height: 1.25;
+        word-break: break-word;
+    }
+
+    small {
+        display: block;
+        color: #9aa9a3;
+        font-size: 1.18rem;
+        margin-top: .25rem;
+    }
+}
+
+.product-ranking-item__stats {
+    display: grid;
+    gap: .25rem;
+    justify-items: start;
+    grid-column: 2 / -1;
+
+    @include m.tablet {
+        grid-column: auto;
+        justify-items: end;
+        text-align: right;
+    }
+
+    span {
+        color: #9aa9a3;
+        font-size: 1.12rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: .05em;
+    }
+
+    strong {
+        color: #8ec7ff;
+        font-size: 1.45rem;
+        line-height: 1.15;
+    }
+
+    small {
+        color: #9aa9a3;
+        font-size: 1.1rem;
+    }
+}
+
+.product-ranking-card--top .product-ranking-item__place {
+    background: rgba(32,180,134,.15);
+    color: #8ff0d0;
+}
+
+.product-ranking-card--low .product-ranking-item__place {
+    background: rgba(245,158,11,.15);
+    color: #ffd48a;
+}

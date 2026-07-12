@@ -1,0 +1,142 @@
+@use 'base/mixins' as m;
+
+.client-page--wide {
+    width: min(100%, 116rem);
+}
+
+.appointments-list {
+    display: grid;
+    gap: 1.4rem;
+}
+
+.appointment-card {
+    display: grid;
+    gap: 1.6rem;
+    padding: 1.8rem;
+    border-radius: 2rem;
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.12);
+    box-shadow: 0 1.6rem 3rem rgba(0,0,0,.18);
+
+    @include m.tablet {
+        grid-template-columns: minmax(0, 1fr) 24rem;
+        align-items: center;
+    }
+}
+
+.appointment-card__main {
+    display: grid;
+    gap: 1.4rem;
+
+    @include m.tablet {
+        grid-template-columns: 16rem minmax(0, 1fr);
+        align-items: center;
+    }
+}
+
+.appointment-card__date {
+    display: grid;
+    gap: .4rem;
+    padding: 1.4rem;
+    border-radius: 1.6rem;
+    background: rgba(18,136,255,.12);
+    border: 1px solid rgba(18,136,255,.22);
+
+    strong {
+        color: white;
+        font-size: 1.7rem;
+    }
+
+    span {
+        color: #9dcfff;
+        font-weight: 800;
+    }
+}
+
+.appointment-card__services {
+    .label-muted {
+        display: block;
+        color: #98a8a1;
+        font-size: 1.2rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: .06em;
+        margin-bottom: .4rem;
+    }
+
+    h2 {
+        color: white;
+        text-align: left;
+        margin: 0;
+        font-size: 2.2rem;
+        line-height: 1.2;
+        font-weight: 800;
+    }
+
+    p {
+        color: #98a8a1;
+        font-size: 1.4rem;
+        margin: .7rem 0 0;
+    }
+}
+
+.appointment-card__side {
+    display: grid;
+    gap: 1rem;
+    justify-items: start;
+
+    @include m.tablet {
+        justify-items: end;
+        text-align: right;
+    }
+
+    form {
+        margin: 0;
+    }
+
+    .btn {
+        min-height: 4rem;
+        padding: .9rem 1.2rem;
+        font-size: 1.25rem;
+    }
+}
+
+.appointment-total {
+    color: #8ec7ff;
+    font-size: 2rem;
+    font-weight: 900;
+}
+
+.label-muted {
+    color: #98a8a1;
+    font-size: 1.3rem;
+}
+
+.status-badge--info {
+    background: rgba(18,136,255,.14);
+    color: #8ec7ff;
+}
+
+.status-badge--danger {
+    background: rgba(220,53,69,.16);
+    color: #ff9da7;
+}
+
+.empty-appointment {
+    @include m.tablet {
+        grid-template-columns: 1fr auto;
+    }
+
+    h2 {
+        color: white;
+        text-align: left;
+        margin: 1rem 0 .4rem;
+        font-size: 2.8rem;
+    }
+
+    p {
+        color: #98a8a1;
+        font-size: 1.5rem;
+        margin: 0;
+    }
+}

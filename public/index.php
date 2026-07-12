@@ -3,45 +3,55 @@
 require_once __DIR__ . '/../includes/app.php';
 
 use Controllers\AdminController;
+use Controllers\AdminCitasController;
 use Controllers\APIController;
 use Controllers\CitaController;
+use Controllers\ClienteController;
+use Controllers\ConfiguracionController;
 use Controllers\LoginController;
+use Controllers\MisCitasController;
+use Controllers\ProductoController;
 use Controllers\ServicioController;
+use Controllers\VentaController;
 use MVC\Router;
 
 $router = new Router();
 
-// Iniciar Sesión
 $router->get('/', [LoginController::class, 'login']);
-$router->Post('/', [LoginController::class, 'login']);
-
-// Cerrar Sesión
+$router->post('/', [LoginController::class, 'login']);
 $router->get('/logout', [LoginController::class, 'logout']);
 
-// Recuperar password olvidado
 $router->get('/olvide', [LoginController::class, 'olvide']);
 $router->post('/olvide', [LoginController::class, 'olvide']);
 $router->get('/recuperar', [LoginController::class, 'recuperar']);
 $router->post('/recuperar', [LoginController::class, 'recuperar']);
 
-// Crear cuenta
 $router->get('/crear-cuenta', [LoginController::class, 'crear']);
 $router->post('/crear-cuenta', [LoginController::class, 'crear']);
-
-// Confirmar cuenta
 $router->get('/confirmar-cuenta', [LoginController::class, 'confirmar']);
 $router->get('/mensaje', [LoginController::class, 'mensaje']);
 
-// Area privada
 $router->get('/cita', [CitaController::class, 'index']);
+$router->get('/mis-citas', [MisCitasController::class, 'index']);
+$router->post('/mis-citas/cancelar', [MisCitasController::class, 'solicitarCancelacion']);
+
 $router->get('/admin', [AdminController::class, 'index']);
 
-// API de citas
+$router->get('/admin/citas', [AdminCitasController::class, 'index']);
+$router->get('/admin/citas/crear', [AdminCitasController::class, 'crear']);
+$router->post('/admin/citas/crear', [AdminCitasController::class, 'crear']);
+$router->post('/admin/citas/estado', [AdminCitasController::class, 'cambiarEstado']);
+$router->post('/admin/citas/posponer', [AdminCitasController::class, 'posponer']);
+
+$router->get('/clientes', [ClienteController::class, 'index']);
+
+$router->get('/configuracion', [ConfiguracionController::class, 'index']);
+$router->post('/configuracion', [ConfiguracionController::class, 'index']);
+
 $router->get('/api/servicios', [APIController::class, 'index']);
 $router->post('/api/citas', [APIController::class, 'guardar']);
 $router->post('/api/eliminar', [APIController::class, 'eliminar']);
 
-// CRUD de servicios
 $router->get('/servicios', [ServicioController::class, 'index']);
 $router->get('/servicios/crear', [ServicioController::class, 'crear']);
 $router->post('/servicios/crear', [ServicioController::class, 'crear']);
@@ -49,5 +59,17 @@ $router->get('/servicios/actualizar', [ServicioController::class, 'actualizar'])
 $router->post('/servicios/actualizar', [ServicioController::class, 'actualizar']);
 $router->post('/servicios/eliminar', [ServicioController::class, 'eliminar']);
 
-// Comprueba y valida las rutas, que existan y les asigna las funciones del Controlador
+$router->get('/productos', [ProductoController::class, 'index']);
+$router->get('/productos/crear', [ProductoController::class, 'crear']);
+$router->post('/productos/crear', [ProductoController::class, 'crear']);
+$router->get('/productos/lote', [ProductoController::class, 'crearLote']);
+$router->post('/productos/lote', [ProductoController::class, 'crearLote']);
+$router->get('/productos/lotes', [ProductoController::class, 'lotes']);
+$router->post('/productos/desactivar', [ProductoController::class, 'desactivar']);
+
+$router->get('/ventas', [VentaController::class, 'index']);
+$router->post('/ventas', [VentaController::class, 'crear']);
+$router->get('/ventas/historial', [VentaController::class, 'historial']);
+$router->get('/ventas/ticket', [VentaController::class, 'ticket']);
+
 $router->comprobarRutas();

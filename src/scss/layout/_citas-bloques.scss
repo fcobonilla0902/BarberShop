@@ -1,0 +1,70 @@
+@use 'base/mixins' as m;
+
+/* ==========================================================
+   ISSUE 5
+   Ajuste de espacio para la vista cliente y estilos de resumen
+   ========================================================== */
+
+.public-shell:has(.client-page) {
+    @include m.desktop {
+        grid-template-columns: minmax(28rem, 32%) minmax(0, 68%);
+    }
+}
+
+.public-card:has(.client-page) {
+    width: min(100%, 118rem);
+}
+
+.public-content:has(.client-page) {
+    @include m.desktop {
+        padding-left: 3rem;
+        padding-right: 3rem;
+    }
+}
+
+.public-hero:has(+ .public-content .client-page) .public-hero__content h2 {
+    font-size: clamp(2.8rem, 3.5vw, 4.6rem);
+}
+
+.public-hero:has(+ .public-content .client-page) .public-hero__content p {
+    font-size: 1.55rem;
+}
+
+.appointment-layout {
+    @include m.desktop {
+        grid-template-columns: minmax(0, 1fr) 26rem;
+    }
+}
+
+@media (min-width: 1351px) {
+    .appointment-main {
+        min-width: 0;
+    }
+
+    .listado-servicios--cards {
+        grid-template-columns: repeat(2, minmax(20rem, 1fr));
+    }
+}
+
+.mini-selected-services {
+    margin-top: 1rem;
+}
+
+.summary-row,
+.ticket-preview > div {
+    align-items: center;
+}
+
+.summary-row strong,
+.ticket-preview strong {
+    line-height: 1.2;
+}
+
+.summary-row b {
+    white-space: nowrap;
+}
+
+.appointment-form .alerta-js,
+.appointment-main .alerta-js {
+    grid-column: 1 / -1;
+}

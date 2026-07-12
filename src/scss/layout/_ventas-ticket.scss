@@ -1,0 +1,257 @@
+@use 'base/mixins' as m;
+
+.ventas-layout {
+    display: grid;
+    gap: 2rem;
+    align-items: start;
+
+    @include m.desktop {
+        grid-template-columns: minmax(0, 1fr) 34rem;
+    }
+}
+
+.ventas-main {
+    display: grid;
+    gap: 2rem;
+}
+
+.sales-grid {
+    display: grid;
+    gap: 1.2rem;
+
+    @include m.tablet {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+.sale-item {
+    display: grid;
+    gap: .7rem;
+    text-align: left;
+    padding: 1.5rem;
+    border-radius: 1.6rem;
+    border: 1px solid #dfe7e3;
+    background: #f8faf9;
+    cursor: pointer;
+    transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+
+    &:hover {
+        transform: translateY(-2px);
+        border-color: #1288ff;
+        box-shadow: 0 1rem 2.2rem rgba(18,136,255,.12);
+    }
+
+    strong {
+        color: #15201c;
+        font-size: 1.7rem;
+        line-height: 1.2;
+    }
+
+    small {
+        color: #66766f;
+        font-size: 1.3rem;
+    }
+
+    b {
+        color: #0b6fd3;
+        font-size: 1.8rem;
+    }
+}
+
+.ticket-panel {
+    position: sticky;
+    top: 2rem;
+    display: grid;
+    gap: 1.6rem;
+    padding: 2rem;
+    border-radius: 2.2rem;
+    background: #08110f;
+    color: white;
+    box-shadow: 0 1.6rem 3rem rgba(8,17,15,.18);
+
+    .campo {
+        margin: 0;
+    }
+
+    .campo label {
+        color: rgba(255,255,255,.76);
+    }
+
+    select {
+        width: 100%;
+        min-height: 4.8rem;
+        border-radius: 1.2rem;
+        border: 1px solid rgba(255,255,255,.12);
+        background: rgba(255,255,255,.08);
+        color: white;
+        padding: 1rem 1.2rem;
+    }
+}
+
+.ticket-panel__header {
+    h2 {
+        text-align: left;
+        margin: 1rem 0 .4rem;
+        color: white;
+        font-size: 2.4rem;
+    }
+
+    p {
+        margin: 0;
+        color: #98a8a1;
+    }
+}
+
+.ticket-items {
+    display: grid;
+    gap: 1rem;
+    max-height: 36rem;
+    overflow: auto;
+}
+
+.ticket-item {
+    display: grid;
+    gap: .8rem;
+    padding: 1.2rem;
+    border-radius: 1.4rem;
+    background: rgba(255,255,255,.07);
+    border: 1px solid rgba(255,255,255,.08);
+
+    strong {
+        display: block;
+        color: white;
+        font-size: 1.4rem;
+    }
+
+    span {
+        color: #98a8a1;
+        font-size: 1.2rem;
+    }
+
+    b {
+        display: block;
+        color: #8ec7ff;
+        font-size: 1.4rem;
+        margin-bottom: .5rem;
+    }
+
+    button {
+        border: 0;
+        background: rgba(220,53,69,.14);
+        color: #ff9da7;
+        border-radius: 999px;
+        padding: .5rem .8rem;
+        cursor: pointer;
+        font-size: 1.1rem;
+        font-weight: 800;
+    }
+}
+
+.ticket-totals {
+    display: grid;
+    gap: .8rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid rgba(255,255,255,.12);
+
+    div {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+    }
+
+    span {
+        color: #98a8a1;
+    }
+
+    strong {
+        color: white;
+    }
+
+    div:last-child strong {
+        color: #8ec7ff;
+        font-size: 1.9rem;
+    }
+}
+
+.ticket-final {
+    margin-top: 2rem;
+}
+
+.ticket-print {
+    width: min(100%, 48rem);
+    margin: 0 auto;
+    padding: 2rem;
+    border: 1px dashed #cfd8d3;
+    border-radius: 1.8rem;
+    background: #fff;
+}
+
+.ticket-print__brand {
+    text-align: center;
+    border-bottom: 1px dashed #cfd8d3;
+    padding-bottom: 1.2rem;
+    margin-bottom: 1.2rem;
+
+    h3 {
+        color: #15201c;
+        margin: 0 0 .5rem;
+        font-size: 2.4rem;
+    }
+
+    p {
+        color: #66766f;
+        margin: .2rem 0;
+        font-size: 1.3rem;
+    }
+}
+
+.ticket-print__items,
+.ticket-print__totals {
+    display: grid;
+    gap: .8rem;
+
+    div {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+    }
+
+    span,
+    strong {
+        color: #15201c;
+    }
+}
+
+.ticket-print__totals {
+    margin-top: 1.4rem;
+    padding-top: 1.2rem;
+    border-top: 1px dashed #cfd8d3;
+
+    div:last-child strong {
+        color: #087d59;
+    }
+}
+
+@media print {
+    body * {
+        visibility: hidden;
+    }
+
+    .ticket-final,
+    .ticket-final * {
+        visibility: visible;
+    }
+
+    .ticket-final {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        box-shadow: none;
+        border: 0;
+    }
+
+    .ticket-final .data-card__header {
+        display: none;
+    }
+}

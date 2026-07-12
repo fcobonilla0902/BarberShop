@@ -1,39 +1,77 @@
-<h1 class="nombre-pagina">Crear Cuenta</h1>
-<p class="descripcion-pagina">Llena el siguiente formulario para crear una cuenta</p>
+<div class="auth-header">
+    <span class="screen-tag">Registro</span>
+    <h1>Crear cuenta</h1>
+    <p>Regístrate como cliente para poder agendar tus citas.</p>
+</div>
 
 <?php include_once __DIR__ . "/../templates/alertas.php"; ?>
 
-<form action="/crear-cuenta" method="POST" class="formulario">
+<form action="/crear-cuenta" method="POST" class="formulario auth-form form-grid">
 
-    <div class="campo">
+    <div class="campo campo--stack">
         <label for="nombre">Nombre</label>
-        <input type="text" id="nombre" name="nombre" placeholder="Tu Nombre" value="<?php echo s($usuario->nombre); ?>">
+        <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" value="<?php echo s($cliente->nombre ?? ''); ?>">
     </div>
 
-    <div class="campo">
-        <label for="apellido">Apellido</label>
-        <input type="text" id="apellido" name="apellido" placeholder="Tu Apellido" value="<?php echo s($usuario->apellido); ?>">
+    <div class="campo campo--stack">
+        <label for="apellido_paterno">Apellido paterno</label>
+        <input type="text" id="apellido_paterno" name="apellido_paterno" placeholder="Apellido paterno" value="<?php echo s($cliente->apellido_paterno ?? ''); ?>">
     </div>
 
-    <div class="campo">
+    <div class="campo campo--stack">
+        <label for="apellido_materno">Apellido materno</label>
+        <input type="text" id="apellido_materno" name="apellido_materno" placeholder="Opcional" value="<?php echo s($cliente->apellido_materno ?? ''); ?>">
+    </div>
+
+    <div class="campo campo--stack">
         <label for="telefono">Teléfono</label>
-        <input type="tel" id="telefono" name="telefono" placeholder="Tu Teléfono" value="<?php echo s($usuario->telefono); ?>">
+        <input type="tel" id="telefono" name="telefono" placeholder="8112345678" value="<?php echo s($cliente->telefono ?? ''); ?>">
     </div>
 
-    <div class="campo">
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" placeholder="Tu Email" value="<?php echo s($usuario->email); ?>">
+    <div class="campo campo--stack">
+        <label for="fecha_nacimiento">Fecha nacimiento</label>
+        <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" value="<?php echo s($cliente->fecha_nacimiento ?? ''); ?>">
     </div>
 
-    <div class="campo">
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password" placeholder="Tu Password">
+    <div class="campo campo--stack">
+        <label for="email">Correo electrónico</label>
+        <input type="email" id="email" name="email" placeholder="correo@ejemplo.com" value="<?php echo s($cuenta->email ?? ''); ?>">
     </div>
 
-    <input type="submit" class="boton" value="Crear Cuenta">
+    <div class="campo campo--stack">
+        <label for="password">Contraseña</label>
+        <input type="password" id="password" name="password" class="js-password-field" placeholder="Mínimo 6 caracteres">
+    </div>
+
+    <div class="campo campo--stack">
+        <label for="password2">Confirmar contraseña</label>
+        <input type="password" id="password2" name="password2" class="js-password-field" placeholder="Repite tu contraseña">
+    </div>
+
+    <label class="password-toggle form-grid__full">
+        <input type="checkbox" class="js-toggle-password">
+        <span>Mostrar contraseñas</span>
+    </label>
+
+    <input type="submit" class="btn btn--primary btn--full form-grid__full" value="Crear cuenta">
 </form>
 
-<div class="acciones">
-    <a href="/">¿Ya tienes una cuenta? Inicia Sesión</a>
-    <a href="/olvide">¿Olvidaste tu password?</a>
+<div class="auth-links">
+    <a href="/">¿Ya tienes cuenta? Inicia sesión</a>
+    <a href="/olvide">Recuperar contraseña</a>
 </div>
+
+<script>
+(function() {
+    const toggle = document.querySelector('.js-toggle-password');
+    const fields = document.querySelectorAll('.js-password-field');
+
+    if(!toggle || fields.length === 0) return;
+
+    toggle.addEventListener('change', function() {
+        fields.forEach(field => {
+            field.type = toggle.checked ? 'text' : 'password';
+        });
+    });
+})();
+</script>

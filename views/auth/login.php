@@ -1,23 +1,51 @@
-<h1 class="nombre-pagina">Login</h1>
-<p class="descripcion-pagina">Inicia sesión con tus datos</p>
+<div class="auth-header">
+    <span class="screen-tag">Acceso</span>
+    <h1>Iniciar sesión</h1>
+    <p>Entra como cliente o administrador para continuar.</p>
+</div>
 
 <?php include_once __DIR__ . "/../templates/alertas.php"; ?>
 
-<form action="/" method="POST" class="formulario">
-    <div class="campo">
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" placeholder="Tu Email">
+<form action="/" method="POST" class="formulario auth-form">
+    <div class="campo campo--stack">
+        <label for="email">Correo electrónico</label>
+        <input type="email" id="email" name="email" placeholder="correo@ejemplo.com">
     </div>
 
-    <div class="campo">
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password" placeholder="Tu Password">
+    <div class="campo campo--stack">
+        <label for="password">Contraseña</label>
+        <input type="password" id="password" name="password" class="js-password-field" placeholder="Tu contraseña">
     </div>
 
-    <input type="submit" class="boton" value="Iniciar Sesión">
+    <label class="password-toggle">
+        <input type="checkbox" class="js-toggle-password">
+        <span>Mostrar contraseña</span>
+    </label>
+
+    <input type="submit" class="btn btn--primary btn--full" value="Entrar">
+
+    <div class="demo-actions">
+        <button class="btn btn--soft" type="submit" name="demo" value="cliente">Demo Cliente</button>
+        <button class="btn btn--soft" type="submit" name="demo" value="admin">Demo Admin</button>
+    </div>
 </form>
 
-<div class="acciones">
-    <a href="/crear-cuenta">¿Aún no tienes una cuenta? Crear una</a>
-    <a href="/olvide">¿Olvidaste tu password?</a>
+<div class="auth-links">
+    <a href="/crear-cuenta">Crear cuenta</a>
+    <a href="/olvide">Recuperar contraseña</a>
 </div>
+
+<script>
+(function() {
+    const toggle = document.querySelector('.js-toggle-password');
+    const fields = document.querySelectorAll('.js-password-field');
+
+    if(!toggle || fields.length === 0) return;
+
+    toggle.addEventListener('change', function() {
+        fields.forEach(field => {
+            field.type = toggle.checked ? 'text' : 'password';
+        });
+    });
+})();
+</script>
