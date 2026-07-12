@@ -176,7 +176,8 @@
 
                             <details class="postpone-panel">
                                 <summary class="postpone-panel__trigger">
-                                    Posponer
+                                    <span class="postpone-panel__title">Posponer</span>
+                                    <small>Cambiar fecha y hora</small>
                                 </summary>
 
                                 <form method="POST" action="/admin/citas/posponer" class="postpone-panel__form" onsubmit="return confirm('¿Posponer esta cita?');">
@@ -191,11 +192,15 @@
 
                                         <div class="campo campo--stack">
                                             <label for="nueva_hora_<?php echo (int)$cita['id']; ?>">Nueva hora</label>
-                                            <input type="time" id="nueva_hora_<?php echo (int)$cita['id']; ?>" name="hora" required>
+                                            <input type="time" id="nueva_hora_<?php echo (int)$cita['id']; ?>" name="hora" min="10:00" max="18:00" step="900" required>
                                         </div>
                                     </div>
 
-                                    <button type="submit" class="btn btn--primary postpone-panel__submit">Confirmar pospuesta</button>
+                                    <div class="postpone-panel__actions">
+                                        <button type="submit" class="btn btn--primary postpone-panel__submit">Confirmar cambio</button>
+                                    </div>
+
+                                    <p class="postpone-panel__hint">El sistema volverá a validar disponibilidad antes de guardar.</p>
                                 </form>
                             </details>
                         <?php } ?>

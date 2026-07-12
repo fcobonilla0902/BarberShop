@@ -418,7 +418,11 @@ class VentaController {
                    ROUND(p.precio_venta_sin_iva + (p.precio_venta_sin_iva * (p.iva_porcentaje / 100)), 2) AS precio_final,
                    COALESCE(SUM(lp.cantidad_actual), 0) AS stock_total
             FROM productos p
-            LEFT JOIN lotes_producto lp ON lp.producto_id = p.id AND lp.estado_lote_id = 1
+            LEFT JOIN lotes_producto lp
+                ON lp.producto_id = p.id
+                AND lp.estado_lote_id = 1
+                AND lp.cantidad_actual > 0
+                AND (lp.fecha_caducidad IS NULL OR lp.fecha_caducidad >= CURDATE())
             WHERE p.activo = 1
             GROUP BY p.id
             HAVING stock_total > 0
@@ -458,6 +462,7 @@ class VentaController {
             WHERE producto_id = {$productoId}
             AND estado_lote_id = 1
             AND cantidad_actual >= {$cantidad}
+            AND (fecha_caducidad IS NULL OR fecha_caducidad >= CURDATE())
             ORDER BY CASE WHEN fecha_caducidad IS NULL THEN 1 ELSE 0 END ASC, fecha_caducidad ASC, fecha_entrada ASC
             LIMIT 1
         ");

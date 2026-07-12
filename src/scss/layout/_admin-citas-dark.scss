@@ -481,4 +481,172 @@
     resize: vertical;
 }
 
+/* ==========================================================
+   Fix visual: panel de posponer cita
+   ========================================================== */
+.admin-appointment-actions {
+    align-items: flex-start;
+}
+
+.postpone-panel {
+    flex: 0 1 auto;
+    min-width: 0;
+}
+
+.postpone-panel[open] {
+    flex: 1 1 100%;
+    width: 100%;
+    max-width: 64rem;
+}
+
+.postpone-panel__trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: .8rem;
+    min-height: 3.9rem;
+    padding: .8rem 1.2rem;
+    border-radius: 1.2rem;
+    border: 1px solid rgba(255,255,255,.10);
+    background: rgba(255,255,255,.055);
+    color: #edf7f3;
+    cursor: pointer;
+    font-size: 1.2rem;
+    font-weight: 800;
+    list-style: none;
+    user-select: none;
+    transition: background-color .18s ease, border-color .18s ease, transform .18s ease;
+}
+
+.postpone-panel__trigger:hover {
+    transform: translateY(-1px);
+    background: rgba(18,136,255,.12);
+    border-color: rgba(18,136,255,.35);
+}
+
+.postpone-panel__trigger::-webkit-details-marker {
+    display: none;
+}
+
+.postpone-panel__trigger::before {
+    content: '▸';
+    display: inline-block;
+    color: #8ec7ff;
+    transition: transform .18s ease;
+}
+
+.postpone-panel[open] .postpone-panel__trigger::before {
+    transform: rotate(90deg);
+}
+
+.postpone-panel__title {
+    color: #edf7f3;
+    line-height: 1;
+}
+
+.postpone-panel__trigger small {
+    color: #9aa9a3;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.postpone-panel__form {
+    display: grid;
+    gap: 1.2rem;
+    margin-top: 1rem;
+    padding: 1.3rem;
+    border-radius: 1.6rem;
+    border: 1px solid rgba(18,136,255,.22);
+    background: linear-gradient(135deg, rgba(18,136,255,.10), rgba(32,180,134,.07));
+    box-shadow: 0 1rem 2.4rem rgba(0,0,0,.14);
+}
+
+.postpone-panel__row {
+    display: grid;
+    gap: 1rem;
+
+    @include m.tablet {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+.postpone-panel__form .campo {
+    margin: 0;
+}
+
+.postpone-panel__form .campo label {
+    color: #dce8e3 !important;
+    font-size: 1.15rem;
+}
+
+.postpone-panel__form input[type="date"],
+.postpone-panel__form input[type="time"] {
+    width: 100%;
+    min-height: 4.6rem;
+    border-radius: 1.2rem;
+    background: rgba(255,255,255,.07);
+    border: 1px solid rgba(255,255,255,.12);
+    color: #edf7f3;
+    padding: 1rem 1.1rem;
+}
+
+.postpone-panel__actions {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.postpone-panel__submit {
+    width: auto;
+}
+
+.postpone-panel__hint {
+    margin: -.4rem 0 0;
+    color: #9aa9a3;
+    font-size: 1.18rem;
+    line-height: 1.4;
+}
+
+html[data-theme="light"] .postpone-panel__trigger {
+    background: rgba(12,24,20,.045) !important;
+    border-color: rgba(12,24,20,.10) !important;
+    color: #0e1d19 !important;
+}
+
+html[data-theme="light"] .postpone-panel__title {
+    color: #0e1d19 !important;
+}
+
+html[data-theme="light"] .postpone-panel__trigger small,
+html[data-theme="light"] .postpone-panel__hint {
+    color: #65756f !important;
+}
+
+html[data-theme="light"] .postpone-panel__form {
+    background: linear-gradient(135deg, rgba(13,127,230,.08), rgba(23,167,123,.06)) !important;
+    border-color: rgba(13,127,230,.18) !important;
+}
+
+html[data-theme="light"] .postpone-panel__form .campo label {
+    color: #30443d !important;
+}
+
+html[data-theme="light"] .postpone-panel__form input[type="date"],
+html[data-theme="light"] .postpone-panel__form input[type="time"] {
+    background: #ffffff !important;
+    border-color: rgba(12,24,20,.14) !important;
+    color: #16231f !important;
+}
+
+@media (max-width: 640px) {
+    .postpone-panel,
+    .postpone-panel[open],
+    .postpone-panel__submit {
+        width: 100%;
+        max-width: none;
+    }
+
+    .postpone-panel__trigger {
+        width: 100%;
+        justify-content: center;
+    }
+}
 
