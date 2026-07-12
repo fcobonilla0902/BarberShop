@@ -167,6 +167,33 @@ class AdminCitasController {
         exit;
     }
 
+    public static function posponer() {
+        isAdmin();
+
+        $citaId = filter_var($_POST['id'] ?? null, FILTER_VALIDATE_INT);
+        $nuevaFecha = trim($_POST['fecha'] ?? '');
+        $nuevaHora = trim($_POST['hora'] ?? '');
+        $redirect = $_POST['redirect'] ?? '/admin/citas';
+
+        if(!$citaId) {
+            self::setMensaje('error', 'La cita no es válida.');
+            header('Location: ' . $redirect);
+            exit;
+        }
+
+        $resultado = self::posponerCita($citaId, $nuevaFecha, $nuevaHora);
+
+        if($resultado['ok']) {
+            self::setMensaje('exito', $resultado['mensaje']);
+            header('Location: /admin/citas?fecha=' . urlencode($nuevaFecha));
+            exit;
+        }
+
+        self::setMensaje('error', $resultado['mensaje']);
+        header('Location: ' . $redirect);
+        exit;
+    }
+
     private static function guardarCitaDesdeAdmin($data) {
         global $db;
 
@@ -207,6 +234,10 @@ class AdminCitasController {
                 return ['ok' => false, 'mensaje' => 'Escribe el nombre o alias de la persona sin cuenta.'];
             }
 
+            if($aliasTelefono !== '' && !preg_match('/^\d+$/', $aliasTelefono)) {
+                return ['ok' => false, 'mensaje' => 'El teléfono solo debe contener números.'];
+            }
+
             if($aliasEmail !== '' && !filter_var($aliasEmail, FILTER_VALIDATE_EMAIL)) {
                 return ['ok' => false, 'mensaje' => 'El correo del cliente sin cuenta no es válido.'];
             }
@@ -222,6 +253,10 @@ class AdminCitasController {
 
         if(!self::horaValida($hora)) {
             return ['ok' => false, 'mensaje' => 'La hora no es válida.'];
+        }
+
+        if(self::fechaHoraEsPasada($fecha, $hora)) {
+            return ['ok' => false, 'mensaje' => 'No se pueden crear citas en fechas u horas pasadas.'];
         }
 
         if(self::esFinDeSemana($fecha)) {
@@ -441,6 +476,127 @@ class AdminCitasController {
                 'ok' => false,
                 'mensaje' => $e->getMessage() ?: 'No se pudo crear la cita.'
             ];
+        }
+    }
+
+    private static function posponerCita($citaId, $fecha, $hora) {
+        global $db;
+
+        $cita = self::obtenerCitaParaPosponer($citaId);
+
+        if(!$cita) {
+            return ['ok' => false, 'mensaje' => 'No se encontró la cita.'];
+        }
+
+        if((int)$cita['estado_cita_id'] !== 1) {
+            return ['ok' => false, 'mensaje' => 'Solo se pueden posponer citas reservadas.'];
+        }
+
+        if(!$fecha || !$hora) {
+            return ['ok' => false, 'mensaje' => 'Faltan la nueva fecha u hora.'];
+        }
+
+        if(!self::fechaValida($fecha)) {
+            return ['ok' => false, 'mensaje' => 'La fecha no es válida.'];
+        }
+
+        if(!self::horaValida($hora)) {
+            return ['ok' => false, 'mensaje' => 'La hora no es válida.'];
+        }
+
+        if(self::fechaHoraEsPasada($fecha, $hora)) {
+            return ['ok' => false, 'mensaje' => 'No se puede posponer una cita a una fecha u hora pasada.'];
+        }
+
+        $duracionTotal = (int)$cita['duracion_total_minutos'];
+        $bloqueMinutos = (int)($cita['bloque_agenda_minutos'] ?? 15);
+        if($bloqueMinutos <= 0) $bloqueMinutos = 15;
+
+        $horaInicio = self::normalizarHora($hora);
+        $horaFin = self::sumarMinutosHora($horaInicio, $duracionTotal);
+
+        $bloques = self::generarBloques($horaInicio, $duracionTotal, $bloqueMinutos);
+
+        if(empty($bloques)) {
+            return ['ok' => false, 'mensaje' => 'No se pudieron generar los bloques de agenda.'];
+        }
+
+        $conflictos = self::buscarConflictosExcluyendoCita(
+            (int)$cita['sucursal_id'],
+            (int)$cita['colaborador_id'],
+            $fecha,
+            $bloques,
+            $citaId
+        );
+
+        if(!empty($conflictos)) {
+            return [
+                'ok' => false,
+                'mensaje' => 'Ese horario ya está ocupado. Conflicto en: ' . implode(', ', $conflictos)
+            ];
+        }
+
+        $fechaSQL = $db->escape_string($fecha);
+        $horaInicioSQL = $db->escape_string($horaInicio);
+        $horaFinSQL = $db->escape_string($horaFin);
+
+        $db->begin_transaction();
+
+        try {
+            $queryCita = "
+                UPDATE citas
+                SET fecha = '{$fechaSQL}',
+                    hora_inicio = '{$horaInicioSQL}',
+                    hora_fin = '{$horaFinSQL}',
+                    updated_at = NOW()
+                WHERE id = {$citaId}
+                LIMIT 1
+            ";
+
+            if(!$db->query($queryCita)) {
+                throw new \Exception($db->error);
+            }
+
+            if(!$db->query("DELETE FROM bloques_agenda WHERE cita_id = {$citaId}")) {
+                throw new \Exception($db->error);
+            }
+
+            foreach($bloques as $bloqueHora) {
+                $bloqueHoraSQL = $db->escape_string($bloqueHora);
+
+                $queryBloque = "
+                    INSERT INTO bloques_agenda
+                    (
+                        cita_id,
+                        sucursal_id,
+                        colaborador_id,
+                        fecha,
+                        hora_inicio,
+                        duracion_bloque_minutos
+                    )
+                    VALUES
+                    (
+                        {$citaId},
+                        {$cita['sucursal_id']},
+                        {$cita['colaborador_id']},
+                        '{$fechaSQL}',
+                        '{$bloqueHoraSQL}',
+                        {$bloqueMinutos}
+                    )
+                ";
+
+                if(!$db->query($queryBloque)) {
+                    throw new \Exception('El horario se ocupó antes de guardar. Intenta con otra hora.');
+                }
+            }
+
+            $db->commit();
+
+            return ['ok' => true, 'mensaje' => 'La cita fue reprogramada correctamente.'];
+        } catch(\Throwable $e) {
+            $db->rollback();
+
+            return ['ok' => false, 'mensaje' => $e->getMessage() ?: 'No se pudo posponer la cita.'];
         }
     }
 
@@ -740,6 +896,39 @@ class AdminCitasController {
         return $conflictos;
     }
 
+    private static function buscarConflictosExcluyendoCita($sucursalId, $colaboradorId, $fecha, $bloques, $citaIdExcluir) {
+        global $db;
+
+        $bloquesSQL = array_map(function($bloque) use ($db) {
+            return "'" . $db->escape_string($bloque) . "'";
+        }, $bloques);
+
+        $fechaSQL = $db->escape_string($fecha);
+        $listaBloques = implode(',', $bloquesSQL);
+        $citaIdExcluir = (int)$citaIdExcluir;
+
+        $query = "
+            SELECT hora_inicio
+            FROM bloques_agenda
+            WHERE sucursal_id = {$sucursalId}
+            AND colaborador_id = {$colaboradorId}
+            AND fecha = '{$fechaSQL}'
+            AND hora_inicio IN ({$listaBloques})
+            AND cita_id != {$citaIdExcluir}
+        ";
+
+        $resultado = $db->query($query);
+        $conflictos = [];
+
+        if($resultado) {
+            while($row = $resultado->fetch_assoc()) {
+                $conflictos[] = substr($row['hora_inicio'], 0, 5);
+            }
+        }
+
+        return $conflictos;
+    }
+
     private static function obtenerEstados() {
         global $db;
 
@@ -769,6 +958,22 @@ class AdminCitasController {
 
         $id = (int)$id;
         $resultado = $db->query("SELECT id, estado_cita_id FROM citas WHERE id = {$id} LIMIT 1");
+
+        return $resultado ? $resultado->fetch_assoc() : null;
+    }
+
+    private static function obtenerCitaParaPosponer($id) {
+        global $db;
+
+        $id = (int)$id;
+        $resultado = $db->query("
+            SELECT c.id, c.estado_cita_id, c.sucursal_id, c.colaborador_id, c.duracion_total_minutos,
+                   s.bloque_agenda_minutos
+            FROM citas c
+            INNER JOIN sucursales s ON s.id = c.sucursal_id
+            WHERE c.id = {$id}
+            LIMIT 1
+        ");
 
         return $resultado ? $resultado->fetch_assoc() : null;
     }
@@ -815,6 +1020,20 @@ class AdminCitasController {
     private static function esFinDeSemana($fecha) {
         $dia = (int)date('N', strtotime($fecha));
         return $dia >= 6;
+    }
+
+    private static function fechaHoraEsPasada($fecha, $hora) {
+        $zona = new \DateTimeZone('America/Monterrey');
+        $ahora = new \DateTime('now', $zona);
+
+        $horaNormalizada = self::normalizarHora($hora);
+        $fechaHoraCita = \DateTime::createFromFormat('Y-m-d H:i:s', $fecha . ' ' . $horaNormalizada, $zona);
+
+        if(!$fechaHoraCita) {
+            return true;
+        }
+
+        return $fechaHoraCita < $ahora;
     }
 
     private static function horaDentroDeHorario($hora) {

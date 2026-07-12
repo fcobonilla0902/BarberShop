@@ -41,6 +41,7 @@ $router->get('/admin/citas', [AdminCitasController::class, 'index']);
 $router->get('/admin/citas/crear', [AdminCitasController::class, 'crear']);
 $router->post('/admin/citas/crear', [AdminCitasController::class, 'crear']);
 $router->post('/admin/citas/estado', [AdminCitasController::class, 'cambiarEstado']);
+$router->post('/admin/citas/posponer', [AdminCitasController::class, 'posponer']);
 
 $router->get('/clientes', [ClienteController::class, 'index']);
 

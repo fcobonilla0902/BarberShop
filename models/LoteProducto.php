@@ -50,6 +50,9 @@ class LoteProducto extends ActiveRecord {
     public function validar() {
         static::$alertas = [];
 
+        // Fecha "hoy" fijada a la zona horaria correcta, sin depender de la config del servidor
+        $hoy = (new \DateTime('now', new \DateTimeZone('America/Monterrey')))->format('Y-m-d');
+
         if(!$this->producto_id) {
             static::$alertas['error'][] = 'El producto es obligatorio';
         }
@@ -64,22 +67,36 @@ class LoteProducto extends ActiveRecord {
 
         if(!$this->fecha_entrada) {
             static::$alertas['error'][] = 'La fecha de entrada es obligatoria';
+        } else {
+            $fechaEntradaValida = \DateTime::createFromFormat('Y-m-d', $this->fecha_entrada);
+
+            if(!$fechaEntradaValida) {
+                static::$alertas['error'][] = 'La fecha de entrada no es válida';
+            } elseif($this->fecha_entrada < $hoy) {
+                static::$alertas['error'][] = 'La fecha de entrada no puede ser una fecha pasada';
+            }
+        }
+
+        if($this->fecha_caducidad) {
+            $fechaCaducidadValida = \DateTime::createFromFormat('Y-m-d', $this->fecha_caducidad);
+
+            if(!$fechaCaducidadValida) {
+                static::$alertas['error'][] = 'La fecha de caducidad no es válida';
+            } elseif($this->fecha_caducidad < $hoy) {
+                static::$alertas['error'][] = 'La fecha de caducidad no puede ser una fecha pasada';
+            }
         }
 
         if($this->cantidad_inicial === '' || !is_numeric($this->cantidad_inicial)) {
             static::$alertas['error'][] = 'La cantidad inicial no es válida';
-        }
-
-        if((int)$this->cantidad_inicial < 0) {
-            static::$alertas['error'][] = 'La cantidad inicial no puede ser negativa';
+        } elseif((int)$this->cantidad_inicial <= 0) {
+            static::$alertas['error'][] = 'La cantidad inicial debe ser mayor a 0';
         }
 
         if($this->costo_unitario_sin_iva === '' || !is_numeric($this->costo_unitario_sin_iva)) {
             static::$alertas['error'][] = 'El costo unitario no es válido';
-        }
-
-        if((float)$this->costo_unitario_sin_iva < 0) {
-            static::$alertas['error'][] = 'El costo unitario no puede ser negativo';
+        } elseif((float)$this->costo_unitario_sin_iva <= 0) {
+            static::$alertas['error'][] = 'El costo unitario debe ser mayor a 0';
         }
 
         return static::$alertas;

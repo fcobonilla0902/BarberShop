@@ -64,6 +64,8 @@ class Servicio extends ActiveRecord {
 
         if(!$this->nombre) {
             static::$alertas['error'][] = 'El nombre del servicio es obligatorio';
+        } elseif(preg_match('/^\d/', trim($this->nombre))) {
+            static::$alertas['error'][] = 'El nombre del servicio no puede empezar con un número';
         }
 
         if(!$this->duracion_minutos || !is_numeric($this->duracion_minutos)) {
@@ -80,18 +82,14 @@ class Servicio extends ActiveRecord {
 
         if($this->precio_base_sin_iva === '' || !is_numeric($this->precio_base_sin_iva)) {
             static::$alertas['error'][] = 'El precio sin IVA no es válido';
-        }
-
-        if((float)$this->precio_base_sin_iva < 0) {
-            static::$alertas['error'][] = 'El precio sin IVA no puede ser negativo';
+        } elseif((float)$this->precio_base_sin_iva <= 0) {
+            static::$alertas['error'][] = 'El precio sin IVA debe ser mayor a 0';
         }
 
         if($this->costo_estimado_sin_iva === '' || !is_numeric($this->costo_estimado_sin_iva)) {
             static::$alertas['error'][] = 'El costo estimado no es válido';
-        }
-
-        if((float)$this->costo_estimado_sin_iva < 0) {
-            static::$alertas['error'][] = 'El costo estimado no puede ser negativo';
+        } elseif((float)$this->costo_estimado_sin_iva <= 0) {
+            static::$alertas['error'][] = 'El costo estimado debe ser mayor a 0';
         }
 
         if($this->iva_porcentaje === '' || !is_numeric($this->iva_porcentaje)) {

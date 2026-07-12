@@ -173,6 +173,31 @@
                                 <input type="hidden" name="redirect" value="<?php echo s($redirect); ?>">
                                 <button type="submit" class="btn btn--danger">Cancelar</button>
                             </form>
+
+                            <details class="postpone-panel">
+                                <summary class="postpone-panel__trigger">
+                                    Posponer
+                                </summary>
+
+                                <form method="POST" action="/admin/citas/posponer" class="postpone-panel__form" onsubmit="return confirm('¿Posponer esta cita?');">
+                                    <input type="hidden" name="id" value="<?php echo (int)$cita['id']; ?>">
+                                    <input type="hidden" name="redirect" value="<?php echo s($redirect); ?>">
+
+                                    <div class="postpone-panel__row">
+                                        <div class="campo campo--stack">
+                                            <label for="nueva_fecha_<?php echo (int)$cita['id']; ?>">Nueva fecha</label>
+                                            <input type="date" id="nueva_fecha_<?php echo (int)$cita['id']; ?>" name="fecha" required>
+                                        </div>
+
+                                        <div class="campo campo--stack">
+                                            <label for="nueva_hora_<?php echo (int)$cita['id']; ?>">Nueva hora</label>
+                                            <input type="time" id="nueva_hora_<?php echo (int)$cita['id']; ?>" name="hora" required>
+                                        </div>
+                                    </div>
+
+                                    <button type="submit" class="btn btn--primary postpone-panel__submit">Confirmar pospuesta</button>
+                                </form>
+                            </details>
                         <?php } ?>
 
                         <?php if($estado === 'Cancelación solicitada') { ?>
